@@ -82,7 +82,7 @@ export default function CardConta(data: GetContaDto) {
         </IconButton>
       </Box>
       <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="body2" color="-moz-initial">
+        <Typography variant="body1" color="-moz-initial">
           Saldo: {`R$ ${data.saldo}`}
         </Typography>
         <Chip
