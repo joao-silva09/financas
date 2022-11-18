@@ -1,20 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import { useDispatch } from "react-redux";
 import { AppDispatch, AppThunk } from "..";
 import {
-  AddContaDto,
   AddObjetivoDto,
-  GetContaDtoServiceResponse,
   GetObjetivoDtoListServiceResponse,
   GetObjetivoDtoServiceResponse,
-  UpdateContaDto,
   UpdateObjetivoDto,
 } from "../../services/api";
-import ApiFactory from "../../services/ApiFactory";
 import { api } from "../../services/ApiManager";
-import { GetToken } from "../../utils/GetToken";
-import { blockUI, displayMessage, unblockUI } from "../Application.store";
 
 const ObjetivoStore = createSlice({
   name: "objetivoStore",
@@ -26,7 +18,10 @@ const ObjetivoStore = createSlice({
     setObjetivo(state, action: PayloadAction<GetObjetivoDtoServiceResponse>) {
       state.objetivo = action.payload;
     },
-    setObjetivos(state, action: PayloadAction<GetObjetivoDtoListServiceResponse>) {
+    setObjetivos(
+      state,
+      action: PayloadAction<GetObjetivoDtoListServiceResponse>
+    ) {
       state.objetivos.data = action.payload.data;
     },
   },

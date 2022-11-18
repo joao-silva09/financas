@@ -5,9 +5,7 @@ import {
   UsuarioLoginDto,
   UsuarioRegisterDto,
 } from "../../services/api";
-import ApiFactory from "../../services/ApiFactory";
 import { api } from "../../services/ApiManager";
-import { blockUI, displayMessage, unblockUI } from "../Application.store";
 
 export const authStore = createSlice({
   name: "auth",
