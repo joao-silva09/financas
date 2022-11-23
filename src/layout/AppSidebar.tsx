@@ -131,7 +131,7 @@ export default function AppSidebar() {
               setSelected={setSelected}
             />
             <MenuItem
-              style={{ color: colors.primary[500] }}
+              style={{ color: colors.red[500] }}
               onClick={() => {
                 setSelected("Sair");
                 handleOpenDialogLogout();
