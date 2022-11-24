@@ -3,7 +3,10 @@ import React, { useState } from "react";
 import { themeTokens } from "../themes";
 import { Sidebar, Menu, MenuItem, MenuItemProps } from "react-pro-sidebar";
 import {
+  AssignmentIndOutlined,
+  AssignmentLateOutlined,
   AssignmentOutlined,
+  AssignmentTurnedInOutlined,
   CalculateOutlined,
   HomeOutlined,
   LocalAtmOutlined,
@@ -76,8 +79,8 @@ export default function AppSidebar() {
           }}
         >
           <Box>
-            <Typography variant="h2" color={colors.primary[500]}>
-              LOGO
+            <Typography variant="h3" color={colors.primary[500]}>
+              eWallet
             </Typography>
           </Box>
           <Stack>
@@ -127,6 +130,13 @@ export default function AppSidebar() {
               title="Objetivos"
               to="/objetivos"
               icon={<AssignmentOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Objetivos Cumpridos"
+              to="/objetivos/cumpridos"
+              icon={<AssignmentTurnedInOutlined />}
               selected={selected}
               setSelected={setSelected}
             />

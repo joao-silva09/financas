@@ -32,7 +32,7 @@ export default function LoginPage() {
     onSubmit: (values, { resetForm, setSubmitting }) => {
       try {
         dispatch(Login(values));
-        navigate("/contas");
+        navigate("/");
       } catch (error: any) {}
     },
   });

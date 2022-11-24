@@ -39,7 +39,7 @@ export default function Pagas() {
         <GridActionsCellItem
           key={params.row.id}
           icon={
-            <Tooltip title="Editar informações">
+            <Tooltip title="Excluir dívida">
               <Delete fontSize="medium" />
             </Tooltip>
           }

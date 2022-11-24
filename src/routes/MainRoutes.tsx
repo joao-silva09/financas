@@ -10,6 +10,7 @@ const Contas = Loadable(lazy(() => import("../pages/Contas")));
 const DividasAtivas = Loadable(lazy(() => import("../pages/Dividas/Ativas")));
 const DividasPagas = Loadable(lazy(() => import("../pages/Dividas/Pagas")));
 const Objetivos = Loadable(lazy(() => import("../pages/Objetivos")));
+const ObjetivosCumpridos = Loadable(lazy(() => import("../pages/Objetivos/Cumpridos")));
 const Operacoes = Loadable(lazy(() => import("../pages/Operacoes")));
 
 // ==============================|| MAIN ROUTING ||============================== //
@@ -33,6 +34,10 @@ const MainRoutes = {
     {
       path: "objetivos",
       element: <Objetivos />,
+    },
+    {
+      path: "objetivos/cumpridos",
+      element: <ObjetivosCumpridos />,
     },
     {
       path: "dividas/ativas",

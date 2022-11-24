@@ -5,8 +5,13 @@ import { GetToken } from "../../utils/GetToken";
 export default function Home() {
   const token = GetToken();
 
-  if (!token) {
-    return <Navigate to="/login" />;
-  }
-  return <div>Home</div>;
+  return (
+    <div>
+      {/* {setTimeout(() => {
+        if (!token) {
+          return <Navigate to="/login" />;
+        }
+      }, 50)} */}
+    </div>
+  );
 }

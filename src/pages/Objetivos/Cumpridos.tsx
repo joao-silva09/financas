@@ -1,4 +1,9 @@
-import { Add, AssignmentTurnedIn, Delete } from "@mui/icons-material";
+import {
+  Add,
+  AssignmentTurnedIn,
+  AssignmentTurnedInOutlined,
+  Delete,
+} from "@mui/icons-material";
 import {
   Box,
   Card,
@@ -8,21 +13,25 @@ import {
   Button,
   Tooltip,
 } from "@mui/material";
-import { DataGrid, GridActionsCellItem, GridColDef, GridColumns } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridColDef,
+  GridColumns,
+} from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomNoRowsOverlay from "../../components/CustomNoRowsOverlay";
 import DialogCriarObjetivo from "../../components/Objetivos/DialogCriarObjetivo";
-import DialogCumprirObjetivo from "../../components/Objetivos/DialogCumprirObjetivo";
 import DialogExcluirObjetivo from "../../components/Objetivos/DialogExcluirObjetivo";
 import { RootState } from "../../store";
 import {
   DeleteObjetivo,
   GetObjetivos,
-  GetObjetivosACumprir,
+  GetObjetivosCumpridos,
 } from "../../store/slices/Objetivo.store";
 
-export default function Objetivos() {
+export default function Cumpridos() {
   const columnsObjetivos: GridColumns = [
     {
       field: "actions",
@@ -30,17 +39,6 @@ export default function Objetivos() {
       type: "actions",
       minWidth: 50,
       getActions: (params) => [
-        <GridActionsCellItem
-          key={params.row.id}
-          icon={
-            <Tooltip title="Cumprir Objetivo">
-              <AssignmentTurnedIn fontSize="medium" />
-            </Tooltip>
-          }
-          label="Cumprir"
-          color="success"
-          onClick={() => handleOpenDialogCumprirObjetivo(params.row.id)}
-        />,
         <GridActionsCellItem
           key={params.row.id}
           icon={
@@ -79,13 +77,8 @@ export default function Objetivos() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(GetObjetivosACumprir());
+    dispatch(GetObjetivosCumpridos());
   }, []);
-
-  const [isOpenDialogCriarObjetivo, setIsOpenDialogCriarObjetivo] =
-    useState(false);
-  const handleOpenDialogCriarObjetivo = () =>
-    setIsOpenDialogCriarObjetivo(!isOpenDialogCriarObjetivo);
 
   const [isOpenDialogExcluirObjetivo, setIsOpenDialogExcluirObjetivo] =
     useState(false);
@@ -103,60 +96,30 @@ export default function Objetivos() {
     setIsOpenDialogExcluirObjetivo(false);
   };
 
-  const [isOpenDialogCumprirObjetivo, setIsOpenDialogCumprirObjetivo] =
-    useState(false);
-  const handleOpenDialogCumprirObjetivo = (id) => {
-    setIdObjetivo(id);
-    setTimeout(() => setIsOpenDialogCumprirObjetivo(true), 60);
-  };
-  const handleCloseDialogCumprirObjetivo = () => {
-    setIsOpenDialogCumprirObjetivo(false);
-  };
-
   const objetivos = useSelector((root: RootState) => root.objetivoStore);
   return (
     <Card>
       <CardHeader
-        title="Objetivos a cumprir"
-        subheader="Seus Objetivos que ainda não foram cumpridos"
+        title="Objetivos cumpridos"
+        subheader="Seus Objetivos que já foram cumpridos"
       />
       <Divider />
       <Box p={3}>
-        {objetivos.objetivosACumprir.data && (
+        {objetivos.objetivosCumpridos.data && (
           <DataGrid
             density="compact"
             autoHeight
             columns={columnsObjetivos}
-            rows={objetivos.objetivosACumprir.data ?? []}
+            rows={objetivos.objetivosCumpridos.data ?? []}
             components={{ NoRowsOverlay: CustomNoRowsOverlay }}
             hideFooter
           />
         )}
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", p: 2 }}>
-        <ButtonGroup variant="contained" color="primary">
-          <Button
-            endIcon={<Add />}
-            onClick={handleOpenDialogCriarObjetivo}
-            variant="contained"
-          >
-            Adicionar Objetivo
-          </Button>
-        </ButtonGroup>
-      </Box>
-      <DialogCriarObjetivo
-        onClose={handleOpenDialogCriarObjetivo}
-        open={isOpenDialogCriarObjetivo}
-      />
       <DialogExcluirObjetivo
         onClose={handleCloseDialogExcluirObjetivo}
         open={isOpenDialogExcluirObjetivo}
         onConfirm={excluirObjetivo}
-      />
-      <DialogCumprirObjetivo
-        onClose={handleCloseDialogCumprirObjetivo}
-        open={isOpenDialogCumprirObjetivo}
-        idObjetivo={idObjetivo!}
       />
     </Card>
   );

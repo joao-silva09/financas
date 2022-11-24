@@ -45,7 +45,7 @@ export default function DividasAReceber() {
         <GridActionsCellItem
           key={params.row.id}
           icon={
-            <Tooltip title="Editar informações">
+            <Tooltip title="Excluir dívida">
               <Delete fontSize="medium" />
             </Tooltip>
           }

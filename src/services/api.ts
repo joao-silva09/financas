@@ -1546,6 +1546,83 @@ export class Client {
   }
 
   /**
+   * Cumprir um objetivo.
+   * @return Success
+   */
+  objetivoPOST2(
+    objetivoId: number,
+    contaId: number,
+    cancelToken?: CancelToken | undefined
+  ): Promise<GetObjetivoDtoListServiceResponse> {
+    let url_ = this.baseUrl + "/api/Objetivo/{objetivoId}/{contaId}";
+    if (objetivoId === undefined || objetivoId === null)
+      throw new Error("The parameter 'objetivoId' must be defined.");
+    url_ = url_.replace("{objetivoId}", encodeURIComponent("" + objetivoId));
+    if (contaId === undefined || contaId === null)
+      throw new Error("The parameter 'contaId' must be defined.");
+    url_ = url_.replace("{contaId}", encodeURIComponent("" + contaId));
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: AxiosRequestConfig = {
+      method: "POST",
+      url: url_,
+      headers: {
+        Accept: "text/plain",
+      },
+      cancelToken,
+    };
+
+    return this.instance
+      .request(options_)
+      .catch((_error: any) => {
+        if (isAxiosError(_error) && _error.response) {
+          return _error.response;
+        } else {
+          throw _error;
+        }
+      })
+      .then((_response: AxiosResponse) => {
+        return this.processObjetivoPOST2(_response);
+      });
+  }
+
+  protected processObjetivoPOST2(
+    response: AxiosResponse
+  ): Promise<GetObjetivoDtoListServiceResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && typeof response.headers === "object") {
+      for (let k in response.headers) {
+        if (response.headers.hasOwnProperty(k)) {
+          _headers[k] = response.headers[k];
+        }
+      }
+    }
+    if (status === 200) {
+      const _responseText = response.data;
+      let result200: any = null;
+      let resultData200 = _responseText;
+      result200 = GetObjetivoDtoListServiceResponse.fromJS(resultData200);
+      return Promise.resolve<GetObjetivoDtoListServiceResponse>(result200);
+    } else if (status === 401) {
+      const _responseText = response.data;
+      return throwException("Unauthorized", status, _responseText, _headers);
+    } else if (status === 403) {
+      const _responseText = response.data;
+      return throwException("Forbidden", status, _responseText, _headers);
+    } else if (status !== 200 && status !== 204) {
+      const _responseText = response.data;
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        _responseText,
+        _headers
+      );
+    }
+    return Promise.resolve<GetObjetivoDtoListServiceResponse>(null as any);
+  }
+
+  /**
    * Buscar todas as operações.
    * @return Success
    */
@@ -2144,366 +2221,6 @@ export class Client {
     }
     return Promise.resolve<GetOperacaoDtoListServiceResponse>(null as any);
   }
-
-  /**
-   * @return Success
-   */
-  getAll5(
-    cancelToken?: CancelToken | undefined
-  ): Promise<GetPlanejamentoDtoListServiceResponse> {
-    let url_ = this.baseUrl + "/api/Planejamento/GetAll";
-    url_ = url_.replace(/[?&]$/, "");
-
-    let options_: AxiosRequestConfig = {
-      method: "GET",
-      url: url_,
-      headers: {
-        Accept: "text/plain",
-      },
-      cancelToken,
-    };
-
-    return this.instance
-      .request(options_)
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processGetAll5(_response);
-      });
-  }
-
-  protected processGetAll5(
-    response: AxiosResponse
-  ): Promise<GetPlanejamentoDtoListServiceResponse> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
-      for (let k in response.headers) {
-        if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
-        }
-      }
-    }
-    if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = GetPlanejamentoDtoListServiceResponse.fromJS(resultData200);
-      return Promise.resolve<GetPlanejamentoDtoListServiceResponse>(result200);
-    } else if (status === 401) {
-      const _responseText = response.data;
-      return throwException("Unauthorized", status, _responseText, _headers);
-    } else if (status === 403) {
-      const _responseText = response.data;
-      return throwException("Forbidden", status, _responseText, _headers);
-    } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException(
-        "An unexpected server error occurred.",
-        status,
-        _responseText,
-        _headers
-      );
-    }
-    return Promise.resolve<GetPlanejamentoDtoListServiceResponse>(null as any);
-  }
-
-  /**
-   * @return Success
-   */
-  planejamentoGET(
-    id: number,
-    cancelToken?: CancelToken | undefined
-  ): Promise<GetPlanejamentoDtoServiceResponse> {
-    let url_ = this.baseUrl + "/api/Planejamento/{id}";
-    if (id === undefined || id === null)
-      throw new Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
-
-    let options_: AxiosRequestConfig = {
-      method: "GET",
-      url: url_,
-      headers: {
-        Accept: "text/plain",
-      },
-      cancelToken,
-    };
-
-    return this.instance
-      .request(options_)
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processPlanejamentoGET(_response);
-      });
-  }
-
-  protected processPlanejamentoGET(
-    response: AxiosResponse
-  ): Promise<GetPlanejamentoDtoServiceResponse> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
-      for (let k in response.headers) {
-        if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
-        }
-      }
-    }
-    if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = GetPlanejamentoDtoServiceResponse.fromJS(resultData200);
-      return Promise.resolve<GetPlanejamentoDtoServiceResponse>(result200);
-    } else if (status === 401) {
-      const _responseText = response.data;
-      return throwException("Unauthorized", status, _responseText, _headers);
-    } else if (status === 403) {
-      const _responseText = response.data;
-      return throwException("Forbidden", status, _responseText, _headers);
-    } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException(
-        "An unexpected server error occurred.",
-        status,
-        _responseText,
-        _headers
-      );
-    }
-    return Promise.resolve<GetPlanejamentoDtoServiceResponse>(null as any);
-  }
-
-  /**
-   * @return Success
-   */
-  planejamentoDELETE(
-    id: number,
-    cancelToken?: CancelToken | undefined
-  ): Promise<GetPlanejamentoDtoListServiceResponse> {
-    let url_ = this.baseUrl + "/api/Planejamento/{id}";
-    if (id === undefined || id === null)
-      throw new Error("The parameter 'id' must be defined.");
-    url_ = url_.replace("{id}", encodeURIComponent("" + id));
-    url_ = url_.replace(/[?&]$/, "");
-
-    let options_: AxiosRequestConfig = {
-      method: "DELETE",
-      url: url_,
-      headers: {
-        Accept: "text/plain",
-      },
-      cancelToken,
-    };
-
-    return this.instance
-      .request(options_)
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processPlanejamentoDELETE(_response);
-      });
-  }
-
-  protected processPlanejamentoDELETE(
-    response: AxiosResponse
-  ): Promise<GetPlanejamentoDtoListServiceResponse> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
-      for (let k in response.headers) {
-        if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
-        }
-      }
-    }
-    if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = GetPlanejamentoDtoListServiceResponse.fromJS(resultData200);
-      return Promise.resolve<GetPlanejamentoDtoListServiceResponse>(result200);
-    } else if (status === 401) {
-      const _responseText = response.data;
-      return throwException("Unauthorized", status, _responseText, _headers);
-    } else if (status === 403) {
-      const _responseText = response.data;
-      return throwException("Forbidden", status, _responseText, _headers);
-    } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException(
-        "An unexpected server error occurred.",
-        status,
-        _responseText,
-        _headers
-      );
-    }
-    return Promise.resolve<GetPlanejamentoDtoListServiceResponse>(null as any);
-  }
-
-  /**
-   * @param body (optional)
-   * @return Success
-   */
-  planejamentoPOST(
-    body: AddPlanejamentoDto | undefined,
-    cancelToken?: CancelToken | undefined
-  ): Promise<GetPlanejamentoDtoListServiceResponse> {
-    let url_ = this.baseUrl + "/api/Planejamento";
-    url_ = url_.replace(/[?&]$/, "");
-
-    const content_ = JSON.stringify(body);
-
-    let options_: AxiosRequestConfig = {
-      data: content_,
-      method: "POST",
-      url: url_,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "text/plain",
-      },
-      cancelToken,
-    };
-
-    return this.instance
-      .request(options_)
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processPlanejamentoPOST(_response);
-      });
-  }
-
-  protected processPlanejamentoPOST(
-    response: AxiosResponse
-  ): Promise<GetPlanejamentoDtoListServiceResponse> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
-      for (let k in response.headers) {
-        if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
-        }
-      }
-    }
-    if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = GetPlanejamentoDtoListServiceResponse.fromJS(resultData200);
-      return Promise.resolve<GetPlanejamentoDtoListServiceResponse>(result200);
-    } else if (status === 401) {
-      const _responseText = response.data;
-      return throwException("Unauthorized", status, _responseText, _headers);
-    } else if (status === 403) {
-      const _responseText = response.data;
-      return throwException("Forbidden", status, _responseText, _headers);
-    } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException(
-        "An unexpected server error occurred.",
-        status,
-        _responseText,
-        _headers
-      );
-    }
-    return Promise.resolve<GetPlanejamentoDtoListServiceResponse>(null as any);
-  }
-
-  /**
-   * @param body (optional)
-   * @return Success
-   */
-  planejamentoPUT(
-    body: UpdatePlanejamentoDto | undefined,
-    cancelToken?: CancelToken | undefined
-  ): Promise<GetPlanejamentoDtoServiceResponse> {
-    let url_ = this.baseUrl + "/api/Planejamento";
-    url_ = url_.replace(/[?&]$/, "");
-
-    const content_ = JSON.stringify(body);
-
-    let options_: AxiosRequestConfig = {
-      data: content_,
-      method: "PUT",
-      url: url_,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "text/plain",
-      },
-      cancelToken,
-    };
-
-    return this.instance
-      .request(options_)
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processPlanejamentoPUT(_response);
-      });
-  }
-
-  protected processPlanejamentoPUT(
-    response: AxiosResponse
-  ): Promise<GetPlanejamentoDtoServiceResponse> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && typeof response.headers === "object") {
-      for (let k in response.headers) {
-        if (response.headers.hasOwnProperty(k)) {
-          _headers[k] = response.headers[k];
-        }
-      }
-    }
-    if (status === 200) {
-      const _responseText = response.data;
-      let result200: any = null;
-      let resultData200 = _responseText;
-      result200 = GetPlanejamentoDtoServiceResponse.fromJS(resultData200);
-      return Promise.resolve<GetPlanejamentoDtoServiceResponse>(result200);
-    } else if (status === 401) {
-      const _responseText = response.data;
-      return throwException("Unauthorized", status, _responseText, _headers);
-    } else if (status === 403) {
-      const _responseText = response.data;
-      return throwException("Forbidden", status, _responseText, _headers);
-    } else if (status !== 200 && status !== 204) {
-      const _responseText = response.data;
-      return throwException(
-        "An unexpected server error occurred.",
-        status,
-        _responseText,
-        _headers
-      );
-    }
-    return Promise.resolve<GetPlanejamentoDtoServiceResponse>(null as any);
-  }
 }
 
 export class AddContaDto implements IAddContaDto {
@@ -2610,7 +2327,7 @@ export class AddObjetivoDto implements IAddObjetivoDto {
   titulo?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  isCumprido?: boolean;
+  situacaoObjetivo?: SituacaoObjetivo;
 
   constructor(data?: IAddObjetivoDto) {
     if (data) {
@@ -2626,7 +2343,7 @@ export class AddObjetivoDto implements IAddObjetivoDto {
       this.titulo = _data["titulo"];
       this.descricao = _data["descricao"];
       this.valor = _data["valor"];
-      this.isCumprido = _data["isCumprido"];
+      this.situacaoObjetivo = _data["situacaoObjetivo"];
     }
   }
 
@@ -2642,7 +2359,7 @@ export class AddObjetivoDto implements IAddObjetivoDto {
     data["titulo"] = this.titulo;
     data["descricao"] = this.descricao;
     data["valor"] = this.valor;
-    data["isCumprido"] = this.isCumprido;
+    data["situacaoObjetivo"] = this.situacaoObjetivo;
     return data;
   }
 }
@@ -2651,7 +2368,7 @@ export interface IAddObjetivoDto {
   titulo?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  isCumprido?: boolean;
+  situacaoObjetivo?: SituacaoObjetivo;
 }
 
 export class AddOperacaoDto implements IAddOperacaoDto {
@@ -2704,54 +2421,6 @@ export interface IAddOperacaoDto {
   valor?: number;
   dataOperacao?: string | undefined;
   tipoDivida?: TipoDivida;
-}
-
-export class AddPlanejamentoDto implements IAddPlanejamentoDto {
-  titulo?: string | undefined;
-  valorInicial?: number;
-  valorPlanejado?: number;
-  isExcedido?: boolean;
-
-  constructor(data?: IAddPlanejamentoDto) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
-    }
-  }
-
-  init(_data?: any) {
-    if (_data) {
-      this.titulo = _data["titulo"];
-      this.valorInicial = _data["valorInicial"];
-      this.valorPlanejado = _data["valorPlanejado"];
-      this.isExcedido = _data["isExcedido"];
-    }
-  }
-
-  static fromJS(data: any): AddPlanejamentoDto {
-    data = typeof data === "object" ? data : {};
-    let result = new AddPlanejamentoDto();
-    result.init(data);
-    return result;
-  }
-
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["titulo"] = this.titulo;
-    data["valorInicial"] = this.valorInicial;
-    data["valorPlanejado"] = this.valorPlanejado;
-    data["isExcedido"] = this.isExcedido;
-    return data;
-  }
-}
-
-export interface IAddPlanejamentoDto {
-  titulo?: string | undefined;
-  valorInicial?: number;
-  valorPlanejado?: number;
-  isExcedido?: boolean;
 }
 
 export enum Banco {
@@ -3097,7 +2766,8 @@ export class GetObjetivoDto implements IGetObjetivoDto {
   titulo?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  isCumprido?: boolean;
+  situacaoObjetivo?: SituacaoObjetivo;
+  conta?: GetContaDto;
 
   constructor(data?: IGetObjetivoDto) {
     if (data) {
@@ -3114,7 +2784,10 @@ export class GetObjetivoDto implements IGetObjetivoDto {
       this.titulo = _data["titulo"];
       this.descricao = _data["descricao"];
       this.valor = _data["valor"];
-      this.isCumprido = _data["isCumprido"];
+      this.situacaoObjetivo = _data["situacaoObjetivo"];
+      this.conta = _data["conta"]
+        ? GetContaDto.fromJS(_data["conta"])
+        : <any>undefined;
     }
   }
 
@@ -3131,7 +2804,8 @@ export class GetObjetivoDto implements IGetObjetivoDto {
     data["titulo"] = this.titulo;
     data["descricao"] = this.descricao;
     data["valor"] = this.valor;
-    data["isCumprido"] = this.isCumprido;
+    data["situacaoObjetivo"] = this.situacaoObjetivo;
+    data["conta"] = this.conta ? this.conta.toJSON() : <any>undefined;
     return data;
   }
 }
@@ -3141,7 +2815,8 @@ export interface IGetObjetivoDto {
   titulo?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  isCumprido?: boolean;
+  situacaoObjetivo?: SituacaoObjetivo;
+  conta?: GetContaDto;
 }
 
 export class GetObjetivoDtoListServiceResponse
@@ -3408,159 +3083,6 @@ export interface IGetOperacaoDtoServiceResponse {
   message?: string | undefined;
 }
 
-export class GetPlanejamentoDto implements IGetPlanejamentoDto {
-  id?: number;
-  titulo?: string | undefined;
-  valorInicial?: number;
-  valorPlanejado?: number;
-  isExcedido?: boolean;
-
-  constructor(data?: IGetPlanejamentoDto) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
-    }
-  }
-
-  init(_data?: any) {
-    if (_data) {
-      this.id = _data["id"];
-      this.titulo = _data["titulo"];
-      this.valorInicial = _data["valorInicial"];
-      this.valorPlanejado = _data["valorPlanejado"];
-      this.isExcedido = _data["isExcedido"];
-    }
-  }
-
-  static fromJS(data: any): GetPlanejamentoDto {
-    data = typeof data === "object" ? data : {};
-    let result = new GetPlanejamentoDto();
-    result.init(data);
-    return result;
-  }
-
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["id"] = this.id;
-    data["titulo"] = this.titulo;
-    data["valorInicial"] = this.valorInicial;
-    data["valorPlanejado"] = this.valorPlanejado;
-    data["isExcedido"] = this.isExcedido;
-    return data;
-  }
-}
-
-export interface IGetPlanejamentoDto {
-  id?: number;
-  titulo?: string | undefined;
-  valorInicial?: number;
-  valorPlanejado?: number;
-  isExcedido?: boolean;
-}
-
-export class GetPlanejamentoDtoListServiceResponse
-  implements IGetPlanejamentoDtoListServiceResponse
-{
-  data?: GetPlanejamentoDto[] | undefined;
-  success?: boolean;
-  message?: string | undefined;
-
-  constructor(data?: IGetPlanejamentoDtoListServiceResponse) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
-    }
-  }
-
-  init(_data?: any) {
-    if (_data) {
-      if (Array.isArray(_data["data"])) {
-        this.data = [] as any;
-        for (let item of _data["data"])
-          this.data!.push(GetPlanejamentoDto.fromJS(item));
-      }
-      this.success = _data["success"];
-      this.message = _data["message"];
-    }
-  }
-
-  static fromJS(data: any): GetPlanejamentoDtoListServiceResponse {
-    data = typeof data === "object" ? data : {};
-    let result = new GetPlanejamentoDtoListServiceResponse();
-    result.init(data);
-    return result;
-  }
-
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    if (Array.isArray(this.data)) {
-      data["data"] = [];
-      for (let item of this.data) data["data"].push(item.toJSON());
-    }
-    data["success"] = this.success;
-    data["message"] = this.message;
-    return data;
-  }
-}
-
-export interface IGetPlanejamentoDtoListServiceResponse {
-  data?: GetPlanejamentoDto[] | undefined;
-  success?: boolean;
-  message?: string | undefined;
-}
-
-export class GetPlanejamentoDtoServiceResponse
-  implements IGetPlanejamentoDtoServiceResponse
-{
-  data?: GetPlanejamentoDto;
-  success?: boolean;
-  message?: string | undefined;
-
-  constructor(data?: IGetPlanejamentoDtoServiceResponse) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
-    }
-  }
-
-  init(_data?: any) {
-    if (_data) {
-      this.data = _data["data"]
-        ? GetPlanejamentoDto.fromJS(_data["data"])
-        : <any>undefined;
-      this.success = _data["success"];
-      this.message = _data["message"];
-    }
-  }
-
-  static fromJS(data: any): GetPlanejamentoDtoServiceResponse {
-    data = typeof data === "object" ? data : {};
-    let result = new GetPlanejamentoDtoServiceResponse();
-    result.init(data);
-    return result;
-  }
-
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["data"] = this.data ? this.data.toJSON() : <any>undefined;
-    data["success"] = this.success;
-    data["message"] = this.message;
-    return data;
-  }
-}
-
-export interface IGetPlanejamentoDtoServiceResponse {
-  data?: GetPlanejamentoDto;
-  success?: boolean;
-  message?: string | undefined;
-}
-
 export class Int32ServiceResponse implements IInt32ServiceResponse {
   data?: number;
   success?: boolean;
@@ -3608,6 +3130,11 @@ export interface IInt32ServiceResponse {
 export enum SituacaoDivida {
   Ativa = "Ativa",
   Paga = "Paga",
+}
+
+export enum SituacaoObjetivo {
+  Não_Cumprido = "Não_Cumprido",
+  Cumprido = "Cumprido",
 }
 
 export class StringServiceResponse implements IStringServiceResponse {
@@ -3776,7 +3303,6 @@ export class UpdateObjetivoDto implements IUpdateObjetivoDto {
   titulo?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  isCumprido?: boolean;
 
   constructor(data?: IUpdateObjetivoDto) {
     if (data) {
@@ -3793,7 +3319,6 @@ export class UpdateObjetivoDto implements IUpdateObjetivoDto {
       this.titulo = _data["titulo"];
       this.descricao = _data["descricao"];
       this.valor = _data["valor"];
-      this.isCumprido = _data["isCumprido"];
     }
   }
 
@@ -3810,7 +3335,6 @@ export class UpdateObjetivoDto implements IUpdateObjetivoDto {
     data["titulo"] = this.titulo;
     data["descricao"] = this.descricao;
     data["valor"] = this.valor;
-    data["isCumprido"] = this.isCumprido;
     return data;
   }
 }
@@ -3820,7 +3344,6 @@ export interface IUpdateObjetivoDto {
   titulo?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  isCumprido?: boolean;
 }
 
 export class UpdateOperacaoDto implements IUpdateOperacaoDto {
@@ -3877,58 +3400,6 @@ export interface IUpdateOperacaoDto {
   valor?: number;
   dataOperacao?: string | undefined;
   tipoDivida?: TipoDivida;
-}
-
-export class UpdatePlanejamentoDto implements IUpdatePlanejamentoDto {
-  id?: number;
-  titulo?: string | undefined;
-  valorInicial?: number;
-  valorPlanejado?: number;
-  isExcedido?: boolean;
-
-  constructor(data?: IUpdatePlanejamentoDto) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
-    }
-  }
-
-  init(_data?: any) {
-    if (_data) {
-      this.id = _data["id"];
-      this.titulo = _data["titulo"];
-      this.valorInicial = _data["valorInicial"];
-      this.valorPlanejado = _data["valorPlanejado"];
-      this.isExcedido = _data["isExcedido"];
-    }
-  }
-
-  static fromJS(data: any): UpdatePlanejamentoDto {
-    data = typeof data === "object" ? data : {};
-    let result = new UpdatePlanejamentoDto();
-    result.init(data);
-    return result;
-  }
-
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["id"] = this.id;
-    data["titulo"] = this.titulo;
-    data["valorInicial"] = this.valorInicial;
-    data["valorPlanejado"] = this.valorPlanejado;
-    data["isExcedido"] = this.isExcedido;
-    return data;
-  }
-}
-
-export interface IUpdatePlanejamentoDto {
-  id?: number;
-  titulo?: string | undefined;
-  valorInicial?: number;
-  valorPlanejado?: number;
-  isExcedido?: boolean;
 }
 
 export class UsuarioLoginDto implements IUsuarioLoginDto {
