@@ -58,18 +58,22 @@ export default function Pagas() {
     {
       field: "titulo",
       headerName: "Título",
-      minWidth: 150,
+      minWidth: 190,
     },
     {
       field: "nomeDevedor",
       headerName: "Nome",
-      minWidth: 150,
+      minWidth: 160,
     },
     {
       field: "valor",
-      headerName: "Valor",
-      minWidth: 120,
-      renderCell: (params) => `R$ ${params.row.valor}`,
+      headerName: "Valor da dívida",
+      minWidth: 135,
+      renderCell: (params) =>
+        `${params.row.valor.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL",
+        })}`,
     },
     {
       field: "dataVencimento",
@@ -80,17 +84,9 @@ export default function Pagas() {
       },
     },
     {
-      field: "dataPagamento",
-      headerName: "Data Pagamento",
-      minWidth: 130,
-      renderCell: (params) => {
-        return new Date(params.row.dataPagamento).toLocaleDateString();
-      },
-    },
-    {
       field: "conta.titulo",
       headerName: "Conta",
-      minWidth: 110,
+      minWidth: 170,
       renderCell: (params: GridRenderCellParams<any, GetDividaDto, any>) => {
         return <div>{params.row.conta?.titulo}</div>;
       },

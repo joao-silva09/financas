@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import ThemeIconMode from "../../components/ThemeIconMode";
 import { UsuarioRegisterDto } from "../../services/api";
 import { RootState } from "../../store";
-import { Login, Logout } from "../../store/slices/Auth.store";
+import { Login, Logout, Register } from "../../store/slices/Auth.store";
 import { GetContaById, GetContas } from "../../store/slices/Conta.store";
 // import { getContas, user_login } from "../../services/authServices";
 // import { UsuarioRegisterDto } from "../../services/interfaces";
@@ -27,10 +27,11 @@ export default function SignIn() {
   const user = useSelector((root: RootState) => root.authStore);
   const conts = useSelector((root: RootState) => root.contaStore);
   const formik = useFormik({
-    initialValues: {} as UsuarioRegisterDto,
+    initialValues: {
+      nome: "nome"
+    } as UsuarioRegisterDto,
     onSubmit: (values) => {
-      // dispatch(DoLogin(values));
-      dispatch(Login(values));
+      dispatch(Register(values));
     },
   });
 
@@ -85,18 +86,7 @@ export default function SignIn() {
                     variant="outlined"
                     autoFocus
                     fullWidth
-                    label="Nome"
-                    onChange={(e) => setFieldValue("email", e.target.value)}
-                    // value={values.email}
-                  />
-                </Grid>
-                <Grid item xs={8}>
-                  <TextField
-                    type="text"
-                    variant="outlined"
-                    autoFocus
-                    fullWidth
-                    label="Email"
+                    label="Nome de usuário"
                     onChange={(e) => setFieldValue("email", e.target.value)}
                     value={values.email}
                   />

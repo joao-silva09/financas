@@ -1,4 +1,10 @@
-import { Close, Delete, Logout, Paid } from "@mui/icons-material";
+import {
+  AssignmentTurnedInOutlined,
+  Close,
+  Delete,
+  Logout,
+  Paid,
+} from "@mui/icons-material";
 import {
   Dialog,
   DialogTitle,
@@ -37,13 +43,8 @@ export default function DialogCumprirObjetivo({
 
   const contas = useSelector((root: RootState) => root.contaStore);
 
-  const formSchema = Yup.object().shape({
-    conta: Yup.string().required("Este campo é obrigatório!"),
-  });
-
   const formik = useFormik({
     initialValues: { contaId: 0 },
-    validationSchema: formSchema,
     onSubmit: (values, { resetForm, setSubmitting }) => {
       try {
         dispatch(CumprirObjetivo(idObjetivo, values.contaId));
@@ -87,8 +88,8 @@ export default function DialogCumprirObjetivo({
           Escolha a conta que será usada para pagar o valor do objetivo
         </DialogContentText>
         <Typography variant="subtitle2" color="-moz-initial">
-          Dica: Caso o objetivo seja sobre um gasto muito alto e você não o pagou a
-          vista, não selecione a conta, o objetivo será marcado como
+          Dica: Caso o objetivo seja sobre um gasto muito alto e você não o
+          pagou a vista, não selecione a conta, o objetivo será marcado como
           concluído sem nenhuma conta e você poderá lançar manualmente suas
           parcelas na página "Dívidas Ativas".
         </Typography>
@@ -131,7 +132,7 @@ export default function DialogCumprirObjetivo({
             Fechar
           </Button>
           <Button
-            endIcon={<Paid />}
+            endIcon={<AssignmentTurnedInOutlined />}
             variant="contained"
             onClick={() => {
               dispatch(CumprirObjetivo(idObjetivo, values.contaId));
@@ -139,7 +140,7 @@ export default function DialogCumprirObjetivo({
             }}
             color="primary"
           >
-            Pagar Dívida
+            Cumprir Objetivo
           </Button>
         </ButtonGroup>
       </DialogActions>

@@ -8,7 +8,12 @@ import {
   Button,
   Tooltip,
 } from "@mui/material";
-import { DataGrid, GridActionsCellItem, GridColDef, GridColumns } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridColDef,
+  GridColumns,
+} from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomNoRowsOverlay from "../../components/CustomNoRowsOverlay";
@@ -57,23 +62,22 @@ export default function Objetivos() {
     {
       field: "titulo",
       headerName: "Título",
-      minWidth: 150,
+      minWidth: 250,
     },
     {
       field: "descricao",
       headerName: "Descrição",
-      minWidth: 300,
+      minWidth: 500,
     },
     {
       field: "valor",
-      headerName: "valor",
-      minWidth: 180,
-      renderCell: (params) => `R$ ${params.row.valor}`,
-    },
-    {
-      field: "isCumprido",
-      headerName: "Cumprido",
-      renderCell: (params) => (params.row.isCumprido ? "Sim" : "Não"),
+      headerName: "Valor do Objetivo",
+      minWidth: 150,
+      renderCell: (params) =>
+        `${params.row.valor.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL",
+        })}`,
     },
   ];
 

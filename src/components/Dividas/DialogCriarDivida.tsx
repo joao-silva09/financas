@@ -14,6 +14,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  InputAdornment,
 } from "@mui/material";
 import { Form, FormikProvider, useFormik } from "formik";
 import React from "react";
@@ -166,6 +167,9 @@ export default function DialogCriarDivida({
                   value={values.valor}
                   error={Boolean(errors.valor)}
                   helperText={errors.valor}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                  }}
                 />
               </Grid>
               <Grid item xs={5}>

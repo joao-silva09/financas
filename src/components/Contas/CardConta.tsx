@@ -83,7 +83,11 @@ export default function CardConta(data: GetContaDto) {
       </Box>
       <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography variant="body1" color="-moz-initial">
-          Saldo: {`R$ ${data.saldo}`}
+          Saldo:{" "}
+          {`${data.saldo!.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL",
+          })}`}
         </Typography>
         <Chip
           avatar={<img width="20" src={verificarBanco(data.banco!)} />}
@@ -97,6 +101,8 @@ export default function CardConta(data: GetContaDto) {
               data.banco === Banco.Sicoob ||
               data.banco === Banco.Nubank
                 ? "white"
+                : theme.palette.text.primary && data.banco === Banco.Sicredi
+                ? "black"
                 : theme.palette.text.primary,
           }}
           size="medium"

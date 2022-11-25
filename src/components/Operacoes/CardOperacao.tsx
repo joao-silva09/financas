@@ -95,7 +95,11 @@ export default function CardConta(data: GetOperacaoDto) {
       </Box>
       <CardContent>
         <Typography variant="body2" color="-moz-initial">
-          Valor: {`R$ ${data.valor}`}
+          Valor:{" "}
+          {`${data.valor!.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL",
+          })}`}
         </Typography>
         <Typography variant="body2" color="-moz-initial">
           Data: {new Date(data.dataOperacao!).toLocaleDateString()}

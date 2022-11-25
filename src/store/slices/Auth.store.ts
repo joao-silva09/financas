@@ -53,6 +53,15 @@ export function Login(body: UsuarioLoginDto): AppThunk | any {
   };
 }
 
+export function Register(body: UsuarioRegisterDto): AppThunk | any {
+  return async function (dispatch: AppDispatch | any) {
+    const result = await api.post("Auth/register", body);
+    console.log(result.data);
+    // localStorage.setItem("accessToken", result.data.data);
+    return result.data;
+  };
+}
+
 export function Logout(): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
     localStorage.removeItem("accessToken");

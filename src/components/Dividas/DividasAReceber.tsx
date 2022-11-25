@@ -69,7 +69,11 @@ export default function DividasAReceber() {
       field: "valor",
       headerName: "Valor",
       minWidth: 70,
-      renderCell: (params) => `R$ ${params.row.valor}`,
+      renderCell: (params) =>
+        `${params.row.valor.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL",
+        })}`,
     },
     {
       field: "dataVencimento",

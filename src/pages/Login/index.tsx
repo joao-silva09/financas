@@ -88,7 +88,7 @@ export default function LoginPage() {
                     variant="outlined"
                     autoFocus
                     fullWidth
-                    label="Email"
+                    label="Nome de usuário"
                     onChange={(e) => setFieldValue("email", e.target.value)}
                     value={values.email}
                   />

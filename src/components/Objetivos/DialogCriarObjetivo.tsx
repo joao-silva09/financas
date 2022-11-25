@@ -10,6 +10,7 @@ import {
   IconButton,
   Grid,
   TextField,
+  InputAdornment,
 } from "@mui/material";
 import { Form, FormikProvider, useFormik } from "formik";
 import React from "react";
@@ -115,6 +116,11 @@ export default function DialogCriarObjetivo({
                   value={values.valor}
                   error={Boolean(errors.valor)}
                   helperText={errors.valor}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">R$</InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
             </Grid>

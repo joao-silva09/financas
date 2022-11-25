@@ -18,12 +18,14 @@ import {
   GridActionsCellItem,
   GridColDef,
   GridColumns,
+  GridRenderCellParams,
 } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomNoRowsOverlay from "../../components/CustomNoRowsOverlay";
 import DialogCriarObjetivo from "../../components/Objetivos/DialogCriarObjetivo";
 import DialogExcluirObjetivo from "../../components/Objetivos/DialogExcluirObjetivo";
+import { GetObjetivoDto } from "../../services/api";
 import { RootState } from "../../store";
 import {
   DeleteObjetivo,
@@ -37,7 +39,7 @@ export default function Cumpridos() {
       field: "actions",
       headerName: "Opções",
       type: "actions",
-      minWidth: 50,
+      minWidth: 100,
       getActions: (params) => [
         <GridActionsCellItem
           key={params.row.id}
@@ -55,23 +57,30 @@ export default function Cumpridos() {
     {
       field: "titulo",
       headerName: "Título",
-      minWidth: 150,
+      minWidth: 230,
     },
     {
       field: "descricao",
       headerName: "Descrição",
-      minWidth: 300,
+      minWidth: 350,
     },
     {
       field: "valor",
-      headerName: "valor",
-      minWidth: 180,
-      renderCell: (params) => `R$ ${params.row.valor}`,
+      headerName: "Valor do Objetivo",
+      minWidth: 150,
+      renderCell: (params) =>
+        `${params.row.valor.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL",
+        })}`,
     },
     {
-      field: "isCumprido",
-      headerName: "Cumprido",
-      renderCell: (params) => (params.row.isCumprido ? "Sim" : "Não"),
+      field: "conta.titulo",
+      headerName: "Conta",
+      minWidth: 170,
+      renderCell: (params: GridRenderCellParams<any, GetObjetivoDto, any>) => {
+        return <div>{params.row.conta?.titulo}</div>;
+      },
     },
   ];
 

@@ -13,6 +13,7 @@ import {
   Autocomplete,
   Box,
   Typography,
+  InputAdornment,
 } from "@mui/material";
 import { Form, FormikProvider, useFormik } from "formik";
 import React, { Fragment } from "react";
@@ -155,6 +156,11 @@ export default function DialogCriarConta({
                   value={values.saldo}
                   error={Boolean(errors.saldo)}
                   helperText={errors.saldo}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">R$</InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
             </Grid>
@@ -185,4 +191,3 @@ export default function DialogCriarConta({
     </Dialog>
   );
 }
-
