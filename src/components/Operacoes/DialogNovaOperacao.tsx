@@ -53,15 +53,21 @@ export default function DialogNovaOperacao({
 
   const formSchema = Yup.object().shape({
     titulo: Yup.string().required("Este campo é obrigatório!"),
-    banco: Yup.string().required("Este campo é obrigatório!"),
-    saldo: Yup.number().required("Este campo é obrigatório!"),
+    descricao: Yup.string().optional(),
+    valor: Yup.number().required("Este campo é obrigatório!"),
+    dataOperacao: Yup.date()
+      .nullable()
+      .required("Este campo é obrigatório!")
+      .typeError("Data inválida")
+      .transform((curr, orig) => (orig === "" ? null : curr)),
+    tipoDivida: Yup.string().required("Este campo é obrigatório!"),
   });
 
   const [contaId, setContaId] = useState<any>(0);
 
   const formik = useFormik({
     initialValues: {} as AddOperacaoDto,
-    // validationSchema: formSchema,
+    validationSchema: formSchema,
     onSubmit: (values, { resetForm, setSubmitting }) => {
       try {
         dispatch(PostOperacao(values, contaId!));
@@ -181,11 +187,15 @@ export default function DialogNovaOperacao({
                   adapterLocale={locale}
                 >
                   <DatePicker
-                    value={values.dataOperacao}
+                    value={
+                      values.dataOperacao == undefined
+                        ? null
+                        : values.dataOperacao
+                    }
                     label="Data Operação"
                     inputFormat="dd/MM/yyyy"
                     onChange={(value: any) =>
-                      onChangeDate("dataOperacao", value!.toString())
+                      onChangeDate("dataOperacao", value)
                     }
                     renderInput={(props) => (
                       <TextField

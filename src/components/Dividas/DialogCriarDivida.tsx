@@ -50,11 +50,11 @@ export default function DialogCriarDivida({
   const formSchema = Yup.object().shape({
     titulo: Yup.string().required("Este campo é obrigatório!"),
     nomeDevedor: Yup.string().required("Este campo é obrigatório!"),
-    descricao: Yup.string().required("Este campo é obrigatório!"),
+    descricao: Yup.string().optional(),
     valor: Yup.number().required("Este campo é obrigatório!"),
     dataVencimento: Yup.date()
       .nullable()
-      .required("Este campo é obrigatório!")
+      .optional()
       .typeError("Data inválida")
       .transform((curr, orig) => (orig === "" ? null : curr)),
     tipoDivida: Yup.string().required("Este campo é obrigatório!"),
@@ -168,7 +168,9 @@ export default function DialogCriarDivida({
                   error={Boolean(errors.valor)}
                   helperText={errors.valor}
                   InputProps={{
-                    startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                    startAdornment: (
+                      <InputAdornment position="start">R$</InputAdornment>
+                    ),
                   }}
                 />
               </Grid>
@@ -179,12 +181,14 @@ export default function DialogCriarDivida({
                 >
                   <DatePicker
                     value={
-                      values.dataVencimento == undefined ? null : values.dataVencimento
+                      values.dataVencimento == undefined
+                        ? null
+                        : values.dataVencimento
                     }
                     label="Data Vencimento"
                     inputFormat="dd/MM/yyyy"
                     onChange={(value: any) =>
-                      onChangeDate("dataVencimento", value!.toString())
+                      onChangeDate("dataVencimento", value)
                     }
                     renderInput={(props) => (
                       <TextField
