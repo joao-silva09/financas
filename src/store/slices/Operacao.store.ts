@@ -38,6 +38,17 @@ export function GetOperacoes(): AppThunk | any {
   };
 }
 
+export function GetOperacoesByMonth(
+  month: number | any,
+  year: number | any
+): AppThunk | any {
+  return async function (dispatch: AppDispatch | any) {
+    const result = await api.get(`/api/Operacao/Get/${month}/${year}`);
+    console.log(result);
+    dispatch(setOperacoes(result.data));
+  };
+}
+
 export function GetOperacaoById(id: number): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
     const result = await api.get(`/api/Operacao/${id}`);
