@@ -108,7 +108,7 @@ export default function Contas() {
                 dataOperacao={data.dataOperacao}
                 titulo={data.titulo}
                 descricao={data.descricao}
-                tipoDivida={data.tipoDivida}
+                tipoOperacao={data.tipoOperacao}
                 id={data.id}
                 valor={data.valor}
               />

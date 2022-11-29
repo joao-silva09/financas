@@ -22,6 +22,7 @@ import {
   Banco,
   GetOperacaoDto,
   TipoDivida,
+  TipoOperacao,
 } from "../../services/api";
 import { RootState } from "../../store";
 import { DeleteConta, GetContaById } from "../../store/slices/Conta.store";
@@ -70,7 +71,7 @@ export default function CardConta(data: GetOperacaoDto) {
     <Card
       sx={{
         backgroundColor:
-          data.tipoDivida === TipoDivida.Gasto ? "#FD2127" : "#0D8751",
+          data.tipoOperacao === TipoOperacao.Gasto ? "#FD2127" : "#0D8751",
       }}
     >
       <CardHeader title={data.titulo} />

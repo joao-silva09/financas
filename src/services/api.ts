@@ -1250,6 +1250,144 @@ export class Client {
   }
 
   /**
+   * Buscar objetivos a cumprir.
+   * @return Success
+   */
+  aCumprir(
+    cancelToken?: CancelToken | undefined
+  ): Promise<GetObjetivoDtoListServiceResponse> {
+    let url_ = this.baseUrl + "/api/Objetivo/Get/aCumprir";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: AxiosRequestConfig = {
+      method: "GET",
+      url: url_,
+      headers: {
+        Accept: "text/plain",
+      },
+      cancelToken,
+    };
+
+    return this.instance
+      .request(options_)
+      .catch((_error: any) => {
+        if (isAxiosError(_error) && _error.response) {
+          return _error.response;
+        } else {
+          throw _error;
+        }
+      })
+      .then((_response: AxiosResponse) => {
+        return this.processACumprir(_response);
+      });
+  }
+
+  protected processACumprir(
+    response: AxiosResponse
+  ): Promise<GetObjetivoDtoListServiceResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && typeof response.headers === "object") {
+      for (let k in response.headers) {
+        if (response.headers.hasOwnProperty(k)) {
+          _headers[k] = response.headers[k];
+        }
+      }
+    }
+    if (status === 200) {
+      const _responseText = response.data;
+      let result200: any = null;
+      let resultData200 = _responseText;
+      result200 = GetObjetivoDtoListServiceResponse.fromJS(resultData200);
+      return Promise.resolve<GetObjetivoDtoListServiceResponse>(result200);
+    } else if (status === 401) {
+      const _responseText = response.data;
+      return throwException("Unauthorized", status, _responseText, _headers);
+    } else if (status === 403) {
+      const _responseText = response.data;
+      return throwException("Forbidden", status, _responseText, _headers);
+    } else if (status !== 200 && status !== 204) {
+      const _responseText = response.data;
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        _responseText,
+        _headers
+      );
+    }
+    return Promise.resolve<GetObjetivoDtoListServiceResponse>(null as any);
+  }
+
+  /**
+   * Buscar objetivos cumpridos.
+   * @return Success
+   */
+  cumpridos(
+    cancelToken?: CancelToken | undefined
+  ): Promise<GetObjetivoDtoListServiceResponse> {
+    let url_ = this.baseUrl + "/api/Objetivo/GetAll/cumpridos";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: AxiosRequestConfig = {
+      method: "GET",
+      url: url_,
+      headers: {
+        Accept: "text/plain",
+      },
+      cancelToken,
+    };
+
+    return this.instance
+      .request(options_)
+      .catch((_error: any) => {
+        if (isAxiosError(_error) && _error.response) {
+          return _error.response;
+        } else {
+          throw _error;
+        }
+      })
+      .then((_response: AxiosResponse) => {
+        return this.processCumpridos(_response);
+      });
+  }
+
+  protected processCumpridos(
+    response: AxiosResponse
+  ): Promise<GetObjetivoDtoListServiceResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && typeof response.headers === "object") {
+      for (let k in response.headers) {
+        if (response.headers.hasOwnProperty(k)) {
+          _headers[k] = response.headers[k];
+        }
+      }
+    }
+    if (status === 200) {
+      const _responseText = response.data;
+      let result200: any = null;
+      let resultData200 = _responseText;
+      result200 = GetObjetivoDtoListServiceResponse.fromJS(resultData200);
+      return Promise.resolve<GetObjetivoDtoListServiceResponse>(result200);
+    } else if (status === 401) {
+      const _responseText = response.data;
+      return throwException("Unauthorized", status, _responseText, _headers);
+    } else if (status === 403) {
+      const _responseText = response.data;
+      return throwException("Forbidden", status, _responseText, _headers);
+    } else if (status !== 200 && status !== 204) {
+      const _responseText = response.data;
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        _responseText,
+        _headers
+      );
+    }
+    return Promise.resolve<GetObjetivoDtoListServiceResponse>(null as any);
+  }
+
+  /**
    * Buscar um objetivo por id.
    * @return Success
    */
@@ -1656,6 +1794,83 @@ export class Client {
   }
 
   protected processGetAll4(
+    response: AxiosResponse
+  ): Promise<GetOperacaoDtoListServiceResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && typeof response.headers === "object") {
+      for (let k in response.headers) {
+        if (response.headers.hasOwnProperty(k)) {
+          _headers[k] = response.headers[k];
+        }
+      }
+    }
+    if (status === 200) {
+      const _responseText = response.data;
+      let result200: any = null;
+      let resultData200 = _responseText;
+      result200 = GetOperacaoDtoListServiceResponse.fromJS(resultData200);
+      return Promise.resolve<GetOperacaoDtoListServiceResponse>(result200);
+    } else if (status === 401) {
+      const _responseText = response.data;
+      return throwException("Unauthorized", status, _responseText, _headers);
+    } else if (status === 403) {
+      const _responseText = response.data;
+      return throwException("Forbidden", status, _responseText, _headers);
+    } else if (status !== 200 && status !== 204) {
+      const _responseText = response.data;
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        _responseText,
+        _headers
+      );
+    }
+    return Promise.resolve<GetOperacaoDtoListServiceResponse>(null as any);
+  }
+
+  /**
+   * Buscar todas as operações de um determinado mês.
+   * @return Success
+   */
+  get(
+    month: number,
+    year: number,
+    cancelToken?: CancelToken | undefined
+  ): Promise<GetOperacaoDtoListServiceResponse> {
+    let url_ = this.baseUrl + "/api/Operacao/Get/{month}/{year}";
+    if (month === undefined || month === null)
+      throw new Error("The parameter 'month' must be defined.");
+    url_ = url_.replace("{month}", encodeURIComponent("" + month));
+    if (year === undefined || year === null)
+      throw new Error("The parameter 'year' must be defined.");
+    url_ = url_.replace("{year}", encodeURIComponent("" + year));
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: AxiosRequestConfig = {
+      method: "GET",
+      url: url_,
+      headers: {
+        Accept: "text/plain",
+      },
+      cancelToken,
+    };
+
+    return this.instance
+      .request(options_)
+      .catch((_error: any) => {
+        if (isAxiosError(_error) && _error.response) {
+          return _error.response;
+        } else {
+          throw _error;
+        }
+      })
+      .then((_response: AxiosResponse) => {
+        return this.processGet(_response);
+      });
+  }
+
+  protected processGet(
     response: AxiosResponse
   ): Promise<GetOperacaoDtoListServiceResponse> {
     const status = response.status;
@@ -2272,7 +2487,7 @@ export class AddDividaDto implements IAddDividaDto {
   nomeDevedor?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  dataVencimento?: string | undefined;
+  dataVencimento?: Date | undefined;
   tipoDivida?: TipoDivida;
 
   constructor(data?: IAddDividaDto) {
@@ -2290,7 +2505,9 @@ export class AddDividaDto implements IAddDividaDto {
       this.nomeDevedor = _data["nomeDevedor"];
       this.descricao = _data["descricao"];
       this.valor = _data["valor"];
-      this.dataVencimento = _data["dataVencimento"];
+      this.dataVencimento = _data["dataVencimento"]
+        ? new Date(_data["dataVencimento"].toString())
+        : <any>undefined;
       this.tipoDivida = _data["tipoDivida"];
     }
   }
@@ -2308,7 +2525,9 @@ export class AddDividaDto implements IAddDividaDto {
     data["nomeDevedor"] = this.nomeDevedor;
     data["descricao"] = this.descricao;
     data["valor"] = this.valor;
-    data["dataVencimento"] = this.dataVencimento;
+    data["dataVencimento"] = this.dataVencimento
+      ? this.dataVencimento.toISOString()
+      : <any>undefined;
     data["tipoDivida"] = this.tipoDivida;
     return data;
   }
@@ -2319,7 +2538,7 @@ export interface IAddDividaDto {
   nomeDevedor?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  dataVencimento?: string | undefined;
+  dataVencimento?: Date | undefined;
   tipoDivida?: TipoDivida;
 }
 
@@ -2375,8 +2594,8 @@ export class AddOperacaoDto implements IAddOperacaoDto {
   titulo?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  dataOperacao?: string | undefined;
-  tipoDivida?: TipoDivida;
+  dataOperacao?: Date | undefined;
+  tipoOperacao?: TipoOperacao;
 
   constructor(data?: IAddOperacaoDto) {
     if (data) {
@@ -2392,8 +2611,10 @@ export class AddOperacaoDto implements IAddOperacaoDto {
       this.titulo = _data["titulo"];
       this.descricao = _data["descricao"];
       this.valor = _data["valor"];
-      this.dataOperacao = _data["dataOperacao"];
-      this.tipoDivida = _data["tipoDivida"];
+      this.dataOperacao = _data["dataOperacao"]
+        ? new Date(_data["dataOperacao"].toString())
+        : <any>undefined;
+      this.tipoOperacao = _data["tipoOperacao"];
     }
   }
 
@@ -2409,8 +2630,10 @@ export class AddOperacaoDto implements IAddOperacaoDto {
     data["titulo"] = this.titulo;
     data["descricao"] = this.descricao;
     data["valor"] = this.valor;
-    data["dataOperacao"] = this.dataOperacao;
-    data["tipoDivida"] = this.tipoDivida;
+    data["dataOperacao"] = this.dataOperacao
+      ? this.dataOperacao.toISOString()
+      : <any>undefined;
+    data["tipoOperacao"] = this.tipoOperacao;
     return data;
   }
 }
@@ -2419,8 +2642,8 @@ export interface IAddOperacaoDto {
   titulo?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  dataOperacao?: string | undefined;
-  tipoDivida?: TipoDivida;
+  dataOperacao?: Date | undefined;
+  tipoOperacao?: TipoOperacao;
 }
 
 export enum Banco {
@@ -2435,7 +2658,7 @@ export enum Banco {
   Inter = "Inter",
   C6_bank = "C6_bank",
   PicPay = "PicPay",
-  Carteira_Pessoal = "Carteira_Pessoal",
+  Carteira_Física = "Carteira_Física",
   Outros = "Outros",
 }
 
@@ -2592,8 +2815,8 @@ export class GetDividaDto implements IGetDividaDto {
   nomeDevedor?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  dataVencimento?: string | undefined;
-  dataPagamento?: string | undefined;
+  dataVencimento?: Date;
+  dataPagamento?: Date;
   tipoDivida?: TipoDivida;
   situacaoDivida?: SituacaoDivida;
   conta?: GetContaDto;
@@ -2614,8 +2837,12 @@ export class GetDividaDto implements IGetDividaDto {
       this.nomeDevedor = _data["nomeDevedor"];
       this.descricao = _data["descricao"];
       this.valor = _data["valor"];
-      this.dataVencimento = _data["dataVencimento"];
-      this.dataPagamento = _data["dataPagamento"];
+      this.dataVencimento = _data["dataVencimento"]
+        ? new Date(_data["dataVencimento"].toString())
+        : <any>undefined;
+      this.dataPagamento = _data["dataPagamento"]
+        ? new Date(_data["dataPagamento"].toString())
+        : <any>undefined;
       this.tipoDivida = _data["tipoDivida"];
       this.situacaoDivida = _data["situacaoDivida"];
       this.conta = _data["conta"]
@@ -2638,8 +2865,12 @@ export class GetDividaDto implements IGetDividaDto {
     data["nomeDevedor"] = this.nomeDevedor;
     data["descricao"] = this.descricao;
     data["valor"] = this.valor;
-    data["dataVencimento"] = this.dataVencimento;
-    data["dataPagamento"] = this.dataPagamento;
+    data["dataVencimento"] = this.dataVencimento
+      ? this.dataVencimento.toISOString()
+      : <any>undefined;
+    data["dataPagamento"] = this.dataPagamento
+      ? this.dataPagamento.toISOString()
+      : <any>undefined;
     data["tipoDivida"] = this.tipoDivida;
     data["situacaoDivida"] = this.situacaoDivida;
     data["conta"] = this.conta ? this.conta.toJSON() : <any>undefined;
@@ -2653,8 +2884,8 @@ export interface IGetDividaDto {
   nomeDevedor?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  dataVencimento?: string | undefined;
-  dataPagamento?: string | undefined;
+  dataVencimento?: Date;
+  dataPagamento?: Date;
   tipoDivida?: TipoDivida;
   situacaoDivida?: SituacaoDivida;
   conta?: GetContaDto;
@@ -2925,8 +3156,8 @@ export class GetOperacaoDto implements IGetOperacaoDto {
   titulo?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  dataOperacao?: string | undefined;
-  tipoDivida?: TipoDivida;
+  dataOperacao?: Date | undefined;
+  tipoOperacao?: TipoOperacao;
   conta?: GetContaDto;
 
   constructor(data?: IGetOperacaoDto) {
@@ -2944,8 +3175,10 @@ export class GetOperacaoDto implements IGetOperacaoDto {
       this.titulo = _data["titulo"];
       this.descricao = _data["descricao"];
       this.valor = _data["valor"];
-      this.dataOperacao = _data["dataOperacao"];
-      this.tipoDivida = _data["tipoDivida"];
+      this.dataOperacao = _data["dataOperacao"]
+        ? new Date(_data["dataOperacao"].toString())
+        : <any>undefined;
+      this.tipoOperacao = _data["tipoOperacao"];
       this.conta = _data["conta"]
         ? GetContaDto.fromJS(_data["conta"])
         : <any>undefined;
@@ -2965,8 +3198,10 @@ export class GetOperacaoDto implements IGetOperacaoDto {
     data["titulo"] = this.titulo;
     data["descricao"] = this.descricao;
     data["valor"] = this.valor;
-    data["dataOperacao"] = this.dataOperacao;
-    data["tipoDivida"] = this.tipoDivida;
+    data["dataOperacao"] = this.dataOperacao
+      ? this.dataOperacao.toISOString()
+      : <any>undefined;
+    data["tipoOperacao"] = this.tipoOperacao;
     data["conta"] = this.conta ? this.conta.toJSON() : <any>undefined;
     return data;
   }
@@ -2977,8 +3212,8 @@ export interface IGetOperacaoDto {
   titulo?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  dataOperacao?: string | undefined;
-  tipoDivida?: TipoDivida;
+  dataOperacao?: Date | undefined;
+  tipoOperacao?: TipoOperacao;
   conta?: GetContaDto;
 }
 
@@ -3186,6 +3421,12 @@ export enum TipoDivida {
   Recebimento = "Recebimento",
 }
 
+export enum TipoOperacao {
+  Gasto = "Gasto",
+  Recebimento = "Recebimento",
+  Transferência = "Transferência",
+}
+
 export class UpdateContaDto implements IUpdateContaDto {
   id?: number;
   titulo?: string | undefined;
@@ -3240,8 +3481,8 @@ export class UpdateDividaDto implements IUpdateDividaDto {
   nomeDevedor?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  dataVencimento?: string | undefined;
-  dataPagamento?: string | undefined;
+  dataVencimento?: Date | undefined;
+  dataPagamento?: Date | undefined;
   tipoDivida?: TipoDivida;
 
   constructor(data?: IUpdateDividaDto) {
@@ -3260,8 +3501,12 @@ export class UpdateDividaDto implements IUpdateDividaDto {
       this.nomeDevedor = _data["nomeDevedor"];
       this.descricao = _data["descricao"];
       this.valor = _data["valor"];
-      this.dataVencimento = _data["dataVencimento"];
-      this.dataPagamento = _data["dataPagamento"];
+      this.dataVencimento = _data["dataVencimento"]
+        ? new Date(_data["dataVencimento"].toString())
+        : <any>undefined;
+      this.dataPagamento = _data["dataPagamento"]
+        ? new Date(_data["dataPagamento"].toString())
+        : <any>undefined;
       this.tipoDivida = _data["tipoDivida"];
     }
   }
@@ -3280,8 +3525,12 @@ export class UpdateDividaDto implements IUpdateDividaDto {
     data["nomeDevedor"] = this.nomeDevedor;
     data["descricao"] = this.descricao;
     data["valor"] = this.valor;
-    data["dataVencimento"] = this.dataVencimento;
-    data["dataPagamento"] = this.dataPagamento;
+    data["dataVencimento"] = this.dataVencimento
+      ? this.dataVencimento.toISOString()
+      : <any>undefined;
+    data["dataPagamento"] = this.dataPagamento
+      ? this.dataPagamento.toISOString()
+      : <any>undefined;
     data["tipoDivida"] = this.tipoDivida;
     return data;
   }
@@ -3293,8 +3542,8 @@ export interface IUpdateDividaDto {
   nomeDevedor?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  dataVencimento?: string | undefined;
-  dataPagamento?: string | undefined;
+  dataVencimento?: Date | undefined;
+  dataPagamento?: Date | undefined;
   tipoDivida?: TipoDivida;
 }
 
@@ -3351,8 +3600,8 @@ export class UpdateOperacaoDto implements IUpdateOperacaoDto {
   titulo?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  dataOperacao?: string | undefined;
-  tipoDivida?: TipoDivida;
+  dataOperacao?: Date | undefined;
+  tipoOperacao?: TipoOperacao;
 
   constructor(data?: IUpdateOperacaoDto) {
     if (data) {
@@ -3369,8 +3618,10 @@ export class UpdateOperacaoDto implements IUpdateOperacaoDto {
       this.titulo = _data["titulo"];
       this.descricao = _data["descricao"];
       this.valor = _data["valor"];
-      this.dataOperacao = _data["dataOperacao"];
-      this.tipoDivida = _data["tipoDivida"];
+      this.dataOperacao = _data["dataOperacao"]
+        ? new Date(_data["dataOperacao"].toString())
+        : <any>undefined;
+      this.tipoOperacao = _data["tipoOperacao"];
     }
   }
 
@@ -3387,8 +3638,10 @@ export class UpdateOperacaoDto implements IUpdateOperacaoDto {
     data["titulo"] = this.titulo;
     data["descricao"] = this.descricao;
     data["valor"] = this.valor;
-    data["dataOperacao"] = this.dataOperacao;
-    data["tipoDivida"] = this.tipoDivida;
+    data["dataOperacao"] = this.dataOperacao
+      ? this.dataOperacao.toISOString()
+      : <any>undefined;
+    data["tipoOperacao"] = this.tipoOperacao;
     return data;
   }
 }
@@ -3398,8 +3651,8 @@ export interface IUpdateOperacaoDto {
   titulo?: string | undefined;
   descricao?: string | undefined;
   valor?: number;
-  dataOperacao?: string | undefined;
-  tipoDivida?: TipoDivida;
+  dataOperacao?: Date | undefined;
+  tipoOperacao?: TipoOperacao;
 }
 
 export class UsuarioLoginDto implements IUsuarioLoginDto {

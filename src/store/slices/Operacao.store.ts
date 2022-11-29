@@ -63,7 +63,6 @@ export function PostOperacao(
 ): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
     const result = await api.post(`/api/Operacao/${contaId}`, body);
-    dispatch(GetOperacoes());
     console.log(result);
   };
 }
@@ -79,7 +78,6 @@ export function PutOperacao(body: UpdateOperacaoDto): AppThunk | any {
 export function DeleteOperacao(id: number): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
     const result = await api.delete(`/api/Operacao/${id}`);
-    dispatch(GetOperacoes());
     dispatch(setOperacoes(result.data));
     console.log(result);
   };

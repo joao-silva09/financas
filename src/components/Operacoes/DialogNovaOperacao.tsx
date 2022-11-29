@@ -28,6 +28,7 @@ import {
   AddOperacaoDto,
   Banco,
   TipoDivida,
+  TipoOperacao,
 } from "../../services/api";
 import { PostOperacao } from "../../store/slices/Operacao.store";
 import * as Yup from "yup";
@@ -60,7 +61,7 @@ export default function DialogNovaOperacao({
       .required("Este campo é obrigatório!")
       .typeError("Data inválida")
       .transform((curr, orig) => (orig === "" ? null : curr)),
-    tipoDivida: Yup.string().required("Este campo é obrigatório!"),
+    tipoOperacao: Yup.string().required("Este campo é obrigatório!"),
   });
 
   const [contaId, setContaId] = useState<any>(0);
@@ -136,14 +137,14 @@ export default function DialogNovaOperacao({
                   <Select
                     fullWidth
                     label="Tipo Operação"
-                    value={values.tipoDivida}
+                    value={values.tipoOperacao}
                     onChange={(e) =>
-                      setFieldValue("tipoDivida", e.target.value)
+                      setFieldValue("tipoOperacao", e.target.value)
                     }
-                    error={Boolean(errors.tipoDivida)}
+                    error={Boolean(errors.tipoOperacao)}
                   >
-                    <MenuItem value={TipoDivida.Gasto}>A Pagar</MenuItem>
-                    <MenuItem value={TipoDivida.Recebimento}>
+                    <MenuItem value={TipoOperacao.Gasto}>A Pagar</MenuItem>
+                    <MenuItem value={TipoOperacao.Recebimento}>
                       A Receber
                     </MenuItem>
                   </Select>
