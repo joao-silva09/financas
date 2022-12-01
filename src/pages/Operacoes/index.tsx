@@ -21,6 +21,8 @@ import { GetContas } from "../../store/slices/Conta.store";
 import {
   GetOperacoes,
   GetOperacoesByMonth,
+  setDateFilter,
+  setStateDateFilter,
 } from "../../store/slices/Operacao.store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import locale from "date-fns/locale/pt-BR";
@@ -31,10 +33,12 @@ export default function Contas() {
     (root: RootState) => root.operacoesStore.operacoes
   );
 
-  const [dateFilter, setDateFilter] = useState<Date>(new Date());
+  const dateFilter = useSelector(
+    (root: RootState) => root.operacoesStore.dateFilter
+  );
 
   const onChangeDate = (value: Date) => {
-    setDateFilter(value);
+    dispatch(setStateDateFilter(value));
     console.log(dateFilter);
   };
 
@@ -117,6 +121,7 @@ export default function Contas() {
         <DialogNovaOperacao
           onClose={handleOpenDialogNovaOperacao}
           open={isOpenDialogNovaOperacao}
+          dateFilter={dateFilter}
         />
       </Grid>
     </>

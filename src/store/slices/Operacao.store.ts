@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch, AppThunk } from "..";
+import store, { AppDispatch, AppThunk } from "..";
 import {
   AddOperacaoDto,
   GetOperacaoDtoListServiceResponse,
@@ -13,6 +13,7 @@ const operacaoStore = createSlice({
   initialState: {
     operacao: {} as GetOperacaoDtoServiceResponse,
     operacoes: {} as GetOperacaoDtoListServiceResponse,
+    dateFilter: new Date(),
   },
   reducers: {
     setOperacao(state, action: PayloadAction<GetOperacaoDtoServiceResponse>) {
@@ -24,11 +25,21 @@ const operacaoStore = createSlice({
     ) {
       state.operacoes.data = action.payload.data;
     },
+    setDateFilter(state, action: PayloadAction<Date>) {
+      state.dateFilter = action.payload;
+    },
   },
 });
 
-export const { setOperacoes, setOperacao } = operacaoStore.actions;
+export const { setOperacoes, setOperacao, setDateFilter } =
+  operacaoStore.actions;
 export default operacaoStore.reducer;
+
+export function setStateDateFilter(date: Date): AppThunk | any {
+  return async function (dispatch: AppDispatch | any) {
+    dispatch(setDateFilter(date));
+  };
+}
 
 export function GetOperacoes(): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
@@ -63,6 +74,12 @@ export function PostOperacao(
 ): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
     const result = await api.post(`/api/Operacao/${contaId}`, body);
+    dispatch(
+      GetOperacoesByMonth(
+        store.getState().operacoesStore.dateFilter.getMonth() + 1,
+        store.getState().operacoesStore.dateFilter.getFullYear()
+      )
+    );
     console.log(result);
   };
 }
@@ -78,7 +95,12 @@ export function PutOperacao(body: UpdateOperacaoDto): AppThunk | any {
 export function DeleteOperacao(id: number): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
     const result = await api.delete(`/api/Operacao/${id}`);
-    dispatch(setOperacoes(result.data));
+    dispatch(
+      GetOperacoesByMonth(
+        store.getState().operacoesStore.dateFilter.getMonth() + 1,
+        store.getState().operacoesStore.dateFilter.getFullYear()
+      )
+    );
     console.log(result);
   };
 }

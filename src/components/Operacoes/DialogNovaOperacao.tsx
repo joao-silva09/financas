@@ -30,7 +30,10 @@ import {
   TipoDivida,
   TipoOperacao,
 } from "../../services/api";
-import { PostOperacao } from "../../store/slices/Operacao.store";
+import {
+  GetOperacoesByMonth,
+  PostOperacao,
+} from "../../store/slices/Operacao.store";
 import * as Yup from "yup";
 import { bancosOptions } from "../../utils/bancosOptions";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -41,11 +44,13 @@ import { RootState } from "../../store";
 type DialogNovaOperacaoProps = {
   open: boolean;
   onClose: VoidFunction;
+  dateFilter: any;
 };
 
 export default function DialogNovaOperacao({
   open,
   onClose,
+  dateFilter,
 }: DialogNovaOperacaoProps) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
