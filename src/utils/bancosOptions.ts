@@ -54,7 +54,7 @@ export const bancosOptions: readonly BancosType[] = [
   },
   {
     icon: "./src/assets/carteira.svg",
-    label: Banco.Carteira_Pessoal,
+    label: Banco.Carteira_Física,
   },
   {
     icon: "./src/assets/outros.svg",

@@ -17,7 +17,7 @@ export const verificarCorBanco = (banco: Banco) => {
     case Banco.Caixa:
       return "#175994";
       break;
-    case Banco.Carteira_Pessoal:
+    case Banco.Carteira_Física:
       return "./src/assets/carteira.svg";
       break;
     case Banco.Itaú:

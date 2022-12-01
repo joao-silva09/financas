@@ -1,4 +1,4 @@
-import { More, MoreVert } from "@mui/icons-material";
+import { More, MoreVert, Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Card,
   CardHeader,
@@ -28,6 +28,8 @@ import DialogExcluirConta from "./DialogExcluirConta";
 export default function CardConta(data: GetContaDto) {
   const theme = useTheme();
   const dispatch = useDispatch();
+
+  const [isSaldoVisible, setIsSaldoVisible] = useState(false);
 
   const conta = useSelector((root: RootState) => root.contaStore.conta);
 
@@ -61,34 +63,59 @@ export default function CardConta(data: GetContaDto) {
 
   return (
     <Card>
-      <CardHeader title={data.titulo} />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          position: "relative",
-          right: 5,
-          bottom: 58,
-        }}
-      >
-        <IconButton
-          aria-label="close"
-          onClick={handleClick}
-          sx={{
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <MoreVert />
-        </IconButton>
-      </Box>
-      <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="body1" color="-moz-initial">
-          Saldo:{" "}
-          {`${data.saldo!.toLocaleString("pt-br", {
-            style: "currency",
-            currency: "BRL",
-          })}`}
-        </Typography>
+      <CardHeader
+        title={<Typography variant="h6">{data.titulo}</Typography>}
+        action={
+          <IconButton aria-label="settings" onClick={handleClick}>
+            <MoreVert />
+          </IconButton>
+        }
+        subheader={
+          <Box display="flex" alignItems="center">
+            <Typography variant="body1" color="-moz-initial">
+              {isSaldoVisible ? (
+                <>
+                  <Typography variant="body1" color="-moz-initial">
+                    Saldo:
+                    {` ${data.saldo!.toLocaleString("pt-br", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}`}
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <Box display="flex" alignItems="center">
+                    <Typography variant="body1" color="-moz-initial">
+                      Saldo:
+                    </Typography>
+                    <Box
+                      sx={{
+                        ml: 0.7,
+                        backgroundColor: "rgba(255, 255, 255, 0.3)",
+                        width: "80px",
+                        height: "16px",
+                      }}
+                    />
+                  </Box>
+                </>
+              )}
+            </Typography>
+
+            <IconButton
+              onClick={() => setIsSaldoVisible(!isSaldoVisible)}
+              sx={{ mx: 0.5 }}
+            >
+              {isSaldoVisible ? (
+                <VisibilityOff fontSize="small" />
+              ) : (
+                <Visibility fontSize="small" />
+              )}
+            </IconButton>
+          </Box>
+        }
+      />
+      <CardContent sx={{ display: "flex", justifyContent: "flex-end" }}>
         <Chip
           avatar={<img width="20" src={verificarBanco(data.banco!)} />}
           sx={{
