@@ -1,4 +1,4 @@
-import { More, MoreVert } from "@mui/icons-material";
+import { Delete, Edit, ExpandMore, More, MoreVert } from "@mui/icons-material";
 import {
   Card,
   CardHeader,
@@ -14,6 +14,10 @@ import {
   Chip,
   useTheme,
   Tooltip,
+  AccordionSummary,
+  AccordionDetails,
+  Accordion,
+  AccordionActions,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -67,66 +71,57 @@ export default function CardConta(data: GetOperacaoDto) {
     setIsOpenDialogEditarOperacao(false);
   };
 
+  const [expanded, setExpanded] = useState<boolean>(false);
+
   return (
-    <Card
-      sx={{
-        backgroundColor:
-          data.tipoOperacao === TipoOperacao.Gasto ? "#FD2127" : "#0D8751",
-      }}
-    >
-      <CardHeader title={data.titulo} />
-      <Box
+    <>
+      <Accordion
+        expanded={expanded}
+        onChange={() => setExpanded(!expanded)}
         sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          position: "relative",
-          right: 5,
-          bottom: 58,
+          backgroundColor:
+            data.tipoOperacao === TipoOperacao.Gasto ? "#FD2127" : "#0D8751",
         }}
       >
-        <IconButton
-          aria-label="close"
-          onClick={handleClick}
-          sx={{
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <MoreVert />
-        </IconButton>
-      </Box>
-      <CardContent>
-        <Typography variant="body2" color="-moz-initial">
-          Valor:{" "}
-          {`${data.valor!.toLocaleString("pt-br", {
-            style: "currency",
-            currency: "BRL",
-          })}`}
-        </Typography>
-        <Typography variant="body2" color="-moz-initial">
-          Data: {new Date(data.dataOperacao!).toLocaleDateString()}
-        </Typography>
-        <Tooltip title={`Saldo da conta: R$ ${data.conta?.saldo}`}>
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>{data.titulo}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
           <Typography variant="body2" color="-moz-initial">
-            Conta: {`${data.conta?.titulo}`}
+            Valor:{" "}
+            {`${data.valor!.toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL",
+            })}`}
           </Typography>
-        </Tooltip>
-      </CardContent>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem onClick={handleOpenDialogEditarOperacao}>
-          Atualizar informações
-        </MenuItem>
-        <MenuItem onClick={handleOpenDialogExcluirOperacao}>
-          Excluir Operação
-        </MenuItem>
-      </Menu>
+          <Typography variant="body2" color="-moz-initial">
+            Data: {new Date(data.dataOperacao!).toLocaleDateString()}
+          </Typography>
+          <Tooltip
+            title={`Saldo da conta: ${data.conta!.saldo!.toLocaleString(
+              "pt-br",
+              {
+                style: "currency",
+                currency: "BRL",
+              }
+            )}`}
+          >
+            <Typography variant="body2" color="-moz-initial">
+              Conta: {`${data.conta?.titulo}`}
+            </Typography>
+          </Tooltip>
+        </AccordionDetails>
+        <AccordionActions>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <IconButton onClick={handleOpenDialogEditarOperacao}>
+              <Edit />
+            </IconButton>
+            <IconButton onClick={handleOpenDialogExcluirOperacao}>
+              <Delete />
+            </IconButton>
+          </Box>
+        </AccordionActions>
+      </Accordion>
       <DialogExcluirOperacao
         onClose={handleOpenDialogExcluirOperacao}
         open={isOpenDialogExcluirOperacao}
@@ -135,9 +130,7 @@ export default function CardConta(data: GetOperacaoDto) {
       {/* <DialogEditarOperacao
         onClose={handleCloseDialogEditarOperacao}
         open={isOpenDialogEditarOperacao}
-        closeMenu={handleClose}
-        data={data}
       /> */}
-    </Card>
+    </>
   );
 }

@@ -37,10 +37,7 @@ export default function Contas() {
     (root: RootState) => root.operacoesStore.dateFilter
   );
 
-  const onChangeDate = (value: Date) => {
-    dispatch(setStateDateFilter(value));
-    console.log(dateFilter);
-  };
+  const onChangeDate = (value: Date) => dispatch(setStateDateFilter(value));
 
   useEffect(() => {
     dispatch(
