@@ -6,14 +6,17 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import store from "./store";
 import "./index.css";
+import NotistackProvider from "./components/NotistackProvider";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <ProSidebarProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <NotistackProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </NotistackProvider>
       </ProSidebarProvider>
     </Provider>
   </React.StrictMode>
