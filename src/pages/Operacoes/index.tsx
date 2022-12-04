@@ -8,6 +8,11 @@ import {
   MenuItem,
   TextField,
   Typography,
+  FormControl,
+  FormLabel,
+  FormHelperText,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import React, { useEffect, useState } from "react";
@@ -21,11 +26,15 @@ import { GetContas } from "../../store/slices/Conta.store";
 import {
   GetOperacoes,
   GetOperacoesByMonth,
+  GetOperacoesByMonthAndType,
   setDateFilter,
   setStateDateFilter,
+  setStateTypeFilterGastos,
+  setStateTypeFilterRecebimentos,
 } from "../../store/slices/Operacao.store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import locale from "date-fns/locale/pt-BR";
+import { TipoOperacao } from "../../services/api";
 
 export default function Contas() {
   const dispatch = useDispatch();
@@ -33,17 +42,15 @@ export default function Contas() {
     (root: RootState) => root.operacoesStore.operacoes
   );
 
-  const dateFilter = useSelector(
-    (root: RootState) => root.operacoesStore.dateFilter
-  );
+  const filters = useSelector((root: RootState) => root.operacoesStore.filters);
 
   const onChangeDate = (value: Date) => dispatch(setStateDateFilter(value));
 
   useEffect(() => {
     dispatch(
-      GetOperacoesByMonth(
-        dateFilter?.getMonth()! + 1,
-        dateFilter?.getFullYear()
+      GetOperacoesByMonthAndType(
+        filters.dateFilter?.getMonth()! + 1,
+        filters.dateFilter?.getFullYear()
       )
     );
     dispatch(GetContas());
@@ -66,14 +73,47 @@ export default function Contas() {
         >
           Nova Operação
         </Button>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          gap={3}
+        >
+          <FormControlLabel
+            label="Recebimentos"
+            control={
+              <Checkbox
+                value=""
+                checked={filters.typeFilter.recebimentos}
+                onChange={(e) =>
+                  dispatch(setStateTypeFilterRecebimentos(e.target.checked))
+                }
+                color="primary"
+              />
+            }
+          />
+          <FormControlLabel
+            label="Gastos"
+            control={
+              <Checkbox
+                value=""
+                checked={filters.typeFilter.gastos}
+                onChange={(e) =>
+                  dispatch(setStateTypeFilterGastos(e.target.checked))
+                }
+                color="primary"
+              />
+            }
+          />
           <LocalizationProvider
             dateAdapter={AdapterDateFns}
             adapterLocale={locale}
           >
             <DatePicker
               views={["month", "year"]}
-              value={dateFilter == undefined ? null : dateFilter}
+              value={
+                filters.dateFilter == undefined ? null : filters.dateFilter
+              }
               label="Filtrar Por Mês"
               onChange={(value) => onChangeDate(value!)}
               renderInput={(props) => (
@@ -87,13 +127,12 @@ export default function Contas() {
             endIcon={<SearchOutlined />}
             onClick={() =>
               dispatch(
-                GetOperacoesByMonth(
-                  dateFilter?.getMonth()! + 1,
-                  dateFilter?.getFullYear()
+                GetOperacoesByMonthAndType(
+                  filters.dateFilter?.getMonth()! + 1,
+                  filters.dateFilter?.getFullYear()
                 )
               )
             }
-            sx={{ mx: 3 }}
           >
             Buscar
           </Button>
@@ -118,7 +157,7 @@ export default function Contas() {
         <DialogNovaOperacao
           onClose={handleOpenDialogNovaOperacao}
           open={isOpenDialogNovaOperacao}
-          dateFilter={dateFilter}
+          dateFilter={filters.dateFilter}
         />
       </Grid>
     </>

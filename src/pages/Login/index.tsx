@@ -1,4 +1,5 @@
 import { LoginOutlined } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Button,
@@ -31,13 +32,24 @@ export default function LoginPage() {
     initialValues: {} as UsuarioLoginDto,
     onSubmit: (values, { resetForm, setSubmitting }) => {
       try {
+        setSubmitting(true);
         dispatch(Login(values));
+      } catch (error: any) {
+      } finally {
+        setSubmitting(false);
         navigate("/");
-      } catch (error: any) {}
+      }
     },
   });
 
-  const { handleChange, handleSubmit, values, errors, setFieldValue } = formik;
+  const {
+    handleChange,
+    handleSubmit,
+    values,
+    errors,
+    isSubmitting,
+    setFieldValue,
+  } = formik;
   return (
     <Grid container minHeight="100vh">
       <Grid container height="5vh">
@@ -103,6 +115,15 @@ export default function LoginPage() {
                   />
                 </Grid>
                 <Grid item xs={8}>
+                  <LoadingButton
+                    loadingPosition="start"
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    loading={isSubmitting}
+                  >
+                    Entrar
+                  </LoadingButton>
                   <Button
                     fullWidth
                     endIcon={<LoginOutlined />}

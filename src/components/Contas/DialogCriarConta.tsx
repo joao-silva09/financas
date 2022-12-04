@@ -47,14 +47,11 @@ export default function DialogCriarConta({
     validationSchema: formSchema,
     onSubmit: (values, { resetForm, setSubmitting }) => {
       try {
-        setSubmitting(true);
         dispatch(PostConta(values));
-      } catch (error: any) {
-        console.log(error);
-      } finally {
         onClose();
         resetForm();
-        setSubmitting(false);
+      } catch (error: any) {
+        console.log(error);
       }
     },
   });
