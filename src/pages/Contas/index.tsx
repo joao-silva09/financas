@@ -1,23 +1,46 @@
 import { Add } from "@mui/icons-material";
-import { Box, Button, Card, Grid, Menu, MenuItem } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Grid,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CardConta from "../../components/Contas/CardConta";
 import DialogCriarConta from "../../components/Contas/DialogCriarConta";
 import { RootState } from "../../store";
-import { GetContas } from "../../store/slices/Conta.store";
+import { GetContas, GetSaldoTotal } from "../../store/slices/Conta.store";
 
 export default function Contas() {
   const dispatch = useDispatch();
   const contas = useSelector((root: RootState) => root.contaStore.contas);
+  const saldoTotal = useSelector(
+    (root: RootState) => root.contaStore.saldoTotal
+  );
 
   useEffect(() => {
     dispatch(GetContas());
+    dispatch(GetSaldoTotal());
   }, [dispatch]);
 
   const [isOpenDialogCriarConta, setIsOpenDialogCriarConta] = useState(false);
   const handleOpenDialogCriarConta = () =>
     setIsOpenDialogCriarConta(!isOpenDialogCriarConta);
+
+  // var total = contas.data!.reduce(getTotal, 0);
+  // function getTotal(total, item) {
+  //   return total + item.saldo;
+  // }
+
+  // var total = contas.data!.map((conta, i) => {
+  //   let soma;
+  //   soma += conta.saldo;
+  //   return soma;
+  // });
 
   return (
     <>
@@ -30,6 +53,13 @@ export default function Contas() {
       >
         Criar Conta
       </Button>
+      <Typography variant="h6" color="-moz-initial">
+        Saldo Total:{" "}
+        {saldoTotal!.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL",
+        })}
+      </Typography>
       <Grid container spacing={3}>
         {contas.data &&
           contas.data.map((data, key) => (

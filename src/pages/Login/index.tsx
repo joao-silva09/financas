@@ -115,15 +115,6 @@ export default function LoginPage() {
                   />
                 </Grid>
                 <Grid item xs={8}>
-                  <LoadingButton
-                    loadingPosition="start"
-                    type="submit"
-                    variant="contained"
-                    fullWidth
-                    loading={isSubmitting}
-                  >
-                    Entrar
-                  </LoadingButton>
                   <Button
                     fullWidth
                     endIcon={<LoginOutlined />}

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch, AppThunk } from "..";
+import store, { AppDispatch, AppThunk } from "..";
 import {
   AddContaDto,
   GetContaDtoListServiceResponse,
@@ -13,6 +13,7 @@ const contaStore = createSlice({
   initialState: {
     conta: {} as GetContaDtoServiceResponse,
     contas: {} as GetContaDtoListServiceResponse,
+    saldoTotal: 0 as number | undefined,
   },
   reducers: {
     setConta(state, action: PayloadAction<GetContaDtoServiceResponse>) {
@@ -21,11 +22,27 @@ const contaStore = createSlice({
     setContas(state, action: PayloadAction<GetContaDtoListServiceResponse>) {
       state.contas.data = action.payload.data;
     },
+    setSaldoTotal(state, action: PayloadAction<number>) {
+      state.saldoTotal = action.payload;
+    },
   },
 });
 
-export const { setContas, setConta } = contaStore.actions;
+export const { setContas, setSaldoTotal, setConta } = contaStore.actions;
 export default contaStore.reducer;
+
+export function GetSaldoTotal(): AppThunk | any {
+  return async function (dispatch: AppDispatch | any) {
+    let result = store.getState().contaStore.saldoTotal;
+    result = store
+      .getState()
+      .contaStore.contas.data!.map((prod) => prod.saldo)
+      .reduce((total, saldo) => total! + saldo!);
+
+    dispatch(setSaldoTotal(result!));
+    return result;
+  };
+}
 
 export function GetContas(): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
