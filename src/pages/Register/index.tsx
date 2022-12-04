@@ -1,3 +1,4 @@
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -5,12 +6,14 @@ import {
   CardHeader,
   Divider,
   Grid,
+  IconButton,
+  InputAdornment,
   Link,
   TextField,
   Typography,
 } from "@mui/material";
 import { Form, FormikProvider, useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ThemeIconMode from "../../components/ThemeIconMode";
@@ -24,11 +27,10 @@ import { GetContaById, GetContas } from "../../store/slices/Conta.store";
 export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((root: RootState) => root.authStore);
-  const conts = useSelector((root: RootState) => root.contaStore);
+
   const formik = useFormik({
     initialValues: {
-      nome: "nome"
+      nome: "nome",
     } as UsuarioRegisterDto,
     onSubmit: (values) => {
       dispatch(Register(values));
@@ -36,6 +38,10 @@ export default function SignIn() {
   });
 
   const { handleChange, handleSubmit, values, errors, setFieldValue } = formik;
+
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
   return (
     <Grid container minHeight="100vh">
       <Grid container height="5vh">
@@ -93,11 +99,24 @@ export default function SignIn() {
                 </Grid>
                 <Grid item xs={8}>
                   <TextField
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     fullWidth
                     label="Senha"
                     onChange={(e) => setFieldValue("password", e.target.value)}
                     value={values.password}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {!showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </Grid>
                 <Grid item xs={8}>

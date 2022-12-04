@@ -1,4 +1,4 @@
-import { LoginOutlined } from "@mui/icons-material";
+import { LoginOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -12,9 +12,10 @@ import {
   IconButton,
   Divider,
   Typography,
+  InputAdornment,
 } from "@mui/material";
 import { Form, FormikProvider, useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ThemeIconMode from "../../components/ThemeIconMode";
@@ -50,6 +51,10 @@ export default function LoginPage() {
     isSubmitting,
     setFieldValue,
   } = formik;
+
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
   return (
     <Grid container minHeight="100vh">
       <Grid container height="5vh">
@@ -107,11 +112,24 @@ export default function LoginPage() {
                 </Grid>
                 <Grid item xs={8}>
                   <TextField
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     fullWidth
                     label="Senha"
                     onChange={(e) => setFieldValue("password", e.target.value)}
                     value={values.password}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {!showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </Grid>
                 <Grid item xs={8}>
