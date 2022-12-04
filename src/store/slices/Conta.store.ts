@@ -7,6 +7,7 @@ import {
   UpdateContaDto,
 } from "../../services/api";
 import { api } from "../../services/ApiManager";
+import { displayMessage } from "../Application.store";
 
 const contaStore = createSlice({
   name: "contaStore",
@@ -46,40 +47,104 @@ export function GetSaldoTotal(): AppThunk | any {
 
 export function GetContas(): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
-    const result = await api.get("/api/Conta/GetAll");
-    console.log(result);
-    dispatch(setContas(result.data));
+    try {
+      const result = await api.get("/api/Conta/GetAll");
+      console.log(result);
+      dispatch(setContas(result.data));
+    } catch (error) {
+      dispatch(
+        displayMessage({
+          message: `Erro ao obter Contas! ${error}`,
+          severity: "error",
+        })
+      );
+    }
   };
 }
 
 export function GetContaById(id: number): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
-    const result = await api.get(`/api/Conta/${id}`);
-    console.log(result.data.data);
-    dispatch(setConta(result.data.data));
+    try {
+      const result = await api.get(`/api/Conta/${id}`);
+      console.log(result.data.data);
+      dispatch(setConta(result.data.data));
+    } catch (error) {
+      dispatch(
+        displayMessage({
+          message: `Erro ao obter Conta! ${error}`,
+          severity: "error",
+        })
+      );
+    }
   };
 }
 
 export function PostConta(body: AddContaDto): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
-    const result = await api.post(`/api/Conta`, body);
-    dispatch(GetContas());
-    console.log(result);
+    try {
+      const result = await api.post(`/api/Conta`, body);
+      dispatch(GetContas());
+      console.log(result);
+      dispatch(setContas(result.data));
+      dispatch(
+        displayMessage({
+          message: `Conta criada com sucesso!`,
+          severity: "success",
+        })
+      );
+    } catch (error) {
+      dispatch(
+        displayMessage({
+          message: `Erro ao criar conta!`,
+          severity: "error",
+        })
+      );
+    }
   };
 }
 
 export function PutConta(body: UpdateContaDto): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
-    const result = await api.put(`/api/Conta`, body);
-    dispatch(GetContas());
-    console.log(result);
+    try {
+      const result = await api.put(`/api/Conta`, body);
+      dispatch(GetContas());
+      console.log(result);
+      dispatch(
+        displayMessage({
+          message: `Conta ${body.titulo} atualizada com sucesso!`,
+          severity: "success",
+        })
+      );
+    } catch (error) {
+      dispatch(
+        displayMessage({
+          message: `Erro ao atualizar conta!`,
+          severity: "error",
+        })
+      );
+    }
   };
 }
 
-export function DeleteConta(id: number): AppThunk | any {
+export function DeleteConta(id: number, titulo?: string): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
-    const result = await api.delete(`/api/Conta/${id}`);
-    dispatch(setContas(result.data));
-    console.log(result);
+    try {
+      const result = await api.delete(`/api/Conta/${id}`);
+      dispatch(setContas(result.data));
+      dispatch(
+        displayMessage({
+          message: `Conta ${titulo ?? ""} excluída com sucesso!`,
+          severity: "success",
+        })
+      );
+      console.log(result);
+    } catch (error) {
+      dispatch(
+        displayMessage({
+          message: `Erro ao excluir a conta!`,
+          severity: "error",
+        })
+      );
+    }
   };
 }

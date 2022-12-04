@@ -6,6 +6,7 @@ import {
   UsuarioRegisterDto,
 } from "../../services/api";
 import { api } from "../../services/ApiManager";
+import { displayMessage } from "../Application.store";
 
 export const authStore = createSlice({
   name: "auth",
@@ -45,20 +46,51 @@ export default authStore.reducer;
 
 export function Login(body: UsuarioLoginDto): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
-    const result = await api.post("Auth/login", body);
-    console.log(result.data);
-    // TODO: USAR setUser PARA MODIFICAR O USUÁRIO LOGADO E TER UM NOME NA TELA, MAS PARA ISSO PRECISA ADICIONAR O NOME DO USUARIO NA RESPOSTA DO BACKEND
-    localStorage.setItem("accessToken", result.data.data);
-    return result.data;
+    try {
+      const result = await api.post("Auth/login", body);
+      console.log(result.data);
+      // TODO: USAR setUser PARA MODIFICAR O USUÁRIO LOGADO E TER UM NOME NA TELA, MAS PARA ISSO PRECISA ADICIONAR O NOME DO USUARIO NA RESPOSTA DO BACKEND
+      localStorage.setItem("accessToken", result.data.data);
+      dispatch(
+        displayMessage({
+          message: `Seja bem vindo!`,
+          severity: "error",
+        })
+      );
+      return result.data;
+    } catch (error) {
+      dispatch(
+        displayMessage({
+          message: `Erro ao efetuar o Login!`,
+          severity: "error",
+        })
+      );
+    }
   };
 }
 
 export function Register(body: UsuarioRegisterDto): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
-    const result = await api.post("Auth/register", body);
-    console.log(result.data);
-    // localStorage.setItem("accessToken", result.data.data);
-    return result.data;
+    try {
+      const result = await api.post("Auth/register", body);
+      console.log(result.data);
+      // localStorage.setItem("accessToken", result.data.data);
+      return result.data;
+      dispatch(
+        displayMessage({
+          message: `Usuário cadastrado! Seja bem vindo!`,
+          severity: "error",
+        })
+      );
+      return result.data;
+    } catch (error) {
+      dispatch(
+        displayMessage({
+          message: `Erro ao efetuar o cadastro!`,
+          severity: "error",
+        })
+      );
+    }
   };
 }
 

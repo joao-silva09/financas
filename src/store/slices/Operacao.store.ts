@@ -96,24 +96,28 @@ export function GetOperacoesByMonthAndType(
 ): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
     let type;
-    const tipo = store.getState().operacoesStore.filters.typeFilter
+    const tipo = store.getState().operacoesStore.filters.typeFilter;
     if (tipo.gastos && tipo.recebimentos) {
       const result = await api.get(`/api/Operacao/Get/${month}/${year}`);
       console.log(result);
       dispatch(setOperacoes(result.data));
-      return result
+      return result;
     } else if (!tipo.gastos && tipo.recebimentos) {
-      type = TipoOperacao.Recebimento
-      const result = await api.get(`/api/Operacao/Get/${month}/${year}/${type}`);
+      type = TipoOperacao.Recebimento;
+      const result = await api.get(
+        `/api/Operacao/Get/${month}/${year}/${type}`
+      );
       console.log(result);
       dispatch(setOperacoes(result.data));
-      return result
+      return result;
     } else if (tipo.gastos && !tipo.recebimentos) {
-      type = TipoOperacao.Gasto
-      const result = await api.get(`/api/Operacao/Get/${month}/${year}/${type}`);
+      type = TipoOperacao.Gasto;
+      const result = await api.get(
+        `/api/Operacao/Get/${month}/${year}/${type}`
+      );
       console.log(result);
       dispatch(setOperacoes(result.data));
-      return result
+      return result;
     }
   };
 }
@@ -133,7 +137,7 @@ export function PostOperacao(
   return async function (dispatch: AppDispatch | any) {
     const result = await api.post(`/api/Operacao/${contaId}`, body);
     dispatch(
-      GetOperacoesByMonth(
+      GetOperacoesByMonthAndType(
         store.getState().operacoesStore.filters.dateFilter.getMonth() + 1,
         store.getState().operacoesStore.filters.dateFilter.getFullYear()
       )
@@ -145,7 +149,12 @@ export function PostOperacao(
 export function PutOperacao(body: UpdateOperacaoDto): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
     const result = await api.put(`/api/Operacao`, body);
-    dispatch(GetOperacoes());
+    dispatch(
+      GetOperacoesByMonthAndType(
+        store.getState().operacoesStore.filters.dateFilter.getMonth() + 1,
+        store.getState().operacoesStore.filters.dateFilter.getFullYear()
+      )
+    );
     console.log(result);
   };
 }
@@ -154,7 +163,7 @@ export function DeleteOperacao(id: number): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
     const result = await api.delete(`/api/Operacao/${id}`);
     dispatch(
-      GetOperacoesByMonth(
+      GetOperacoesByMonthAndType(
         store.getState().operacoesStore.filters.dateFilter.getMonth() + 1,
         store.getState().operacoesStore.filters.dateFilter.getFullYear()
       )
