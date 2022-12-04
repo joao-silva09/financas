@@ -8,6 +8,7 @@ import {
   AssignmentOutlined,
   AssignmentTurnedInOutlined,
   CalculateOutlined,
+  Dashboard,
   HomeOutlined,
   LocalAtmOutlined,
   LogoutOutlined,
@@ -95,6 +96,13 @@ export default function AppSidebar() {
               title="Home"
               to="/"
               icon={<HomeOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Dashboard"
+              to="/dashboard"
+              icon={<Dashboard />}
               selected={selected}
               setSelected={setSelected}
             />

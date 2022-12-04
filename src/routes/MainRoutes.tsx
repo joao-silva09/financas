@@ -3,14 +3,16 @@ import Loadable from "../components/Loadable";
 
 // project import
 import AuthLayout from "../layout/AuthLayout";
-import Dividas from "../pages/Dividas/Ativas";
 
 const Home = Loadable(lazy(() => import("../pages/Home")));
+const Dashboard = Loadable(lazy(() => import("../pages/Dashboard")));
 const Contas = Loadable(lazy(() => import("../pages/Contas")));
 const DividasAtivas = Loadable(lazy(() => import("../pages/Dividas/Ativas")));
 const DividasPagas = Loadable(lazy(() => import("../pages/Dividas/Pagas")));
 const Objetivos = Loadable(lazy(() => import("../pages/Objetivos")));
-const ObjetivosCumpridos = Loadable(lazy(() => import("../pages/Objetivos/Cumpridos")));
+const ObjetivosCumpridos = Loadable(
+  lazy(() => import("../pages/Objetivos/Cumpridos"))
+);
 const Operacoes = Loadable(lazy(() => import("../pages/Operacoes")));
 
 // ==============================|| MAIN ROUTING ||============================== //
@@ -22,6 +24,10 @@ const MainRoutes = {
     {
       path: "/",
       element: <Home />,
+    },
+    {
+      path: "dashboard",
+      element: <Dashboard />,
     },
     {
       path: "contas",
