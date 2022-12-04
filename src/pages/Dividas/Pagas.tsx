@@ -80,7 +80,9 @@ export default function Pagas() {
       headerName: "Data Vencimento",
       minWidth: 130,
       renderCell: (params) => {
-        return new Date(params.row.dataVencimento).toLocaleDateString();
+        return params.row.dataVencimento === "0001-01-01T00:00:00"
+          ? ""
+          : new Date(params.row.dataVencimento).toLocaleDateString() ?? "";
       },
     },
     {
