@@ -2,10 +2,10 @@ import { IconifyIcon, Icon } from "@iconify/react";
 import { Check, Close, Info, Warning } from "@mui/icons-material";
 import { alpha, Box, GlobalStyles, useTheme } from "@mui/material";
 import { SnackbarProvider } from "notistack";
-import checkmarkCircle2Fill from "@iconify/icons-eva/checkmark-circle-2-fill";
-import infoFill from "@iconify/icons-eva/info-fill";
-import alertCircleFill from "@iconify/icons-eva/alert-circle-fill";
-import alertTriangleFill from "@iconify/icons-eva/alert-triangle-fill";
+import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill'
+import infoFill from '@iconify/icons-eva/info-fill'
+import alertCircleFill from '@iconify/icons-eva/alert-circle-fill'
+import alertTriangleFill from '@iconify/icons-eva/alert-triangle-fill'
 import React from "react";
 import { ColorSchema } from "../themes";
 // import {IconifyIcon} from "@ic"
@@ -63,7 +63,7 @@ function SnackbarIcon({ icon, color }: SnackbarIconProps) {
         alignItems: "center",
         justifyContent: "center",
         color: `${color}.main`,
-        background: (theme) => alpha("#008148", 0.16),
+        bgcolor: (theme) => alpha(theme.palette[color].main, 0.16),
       }}
     >
       <Icon icon={icon} width={24} height={24} />
