@@ -63,6 +63,7 @@ export default function DialogCriarConta({
     errors,
     setFieldValue,
     resetForm,
+    handleBlur,
     touched,
     isValid,
     dirty,
@@ -90,13 +91,15 @@ export default function DialogCriarConta({
                 <TextField
                   type="text"
                   variant="outlined"
-                  autoFocus
+                  required
                   fullWidth
                   label="Título"
+                  name="titulo"
                   onChange={(e) => setFieldValue("titulo", e.target.value)}
                   value={values.titulo}
-                  error={Boolean(errors.titulo)}
-                  helperText={errors.titulo}
+                  onBlur={handleBlur}
+                  error={touched.titulo && Boolean(errors.titulo)}
+                  helperText={touched.titulo && errors.titulo}
                 />
               </Grid>
               <Grid item xs={8}>
@@ -112,6 +115,7 @@ export default function DialogCriarConta({
                   onChange={(event, value) =>
                     setFieldValue("banco", value?.label)
                   }
+                  onBlur={handleBlur}
                   renderOption={(props, option) => (
                     <Box
                       component="li"
@@ -134,10 +138,12 @@ export default function DialogCriarConta({
                     return (
                       <TextField
                         {...params}
+                        required
                         label="Banco"
+                        name="banco"
                         autoComplete="off"
-                        error={Boolean(errors.banco)}
-                        helperText={errors.banco}
+                        error={touched.banco && Boolean(errors.banco)}
+                        helperText={touched.banco && errors.banco}
                         inputProps={{
                           ...params.inputProps,
                           autoComplete: "new-password", // disable autocomplete and autofill
@@ -150,12 +156,15 @@ export default function DialogCriarConta({
               <Grid item xs={8}>
                 <TextField
                   fullWidth
+                  required
                   type="number"
+                  name="saldo"
                   label="Saldo inicial"
                   onChange={(e) => setFieldValue("saldo", e.target.value)}
+                  onBlur={handleBlur}
                   value={values.saldo}
-                  error={Boolean(errors.saldo)}
-                  helperText={errors.saldo}
+                  error={touched.saldo && Boolean(errors.saldo)}
+                  helperText={touched.saldo && errors.saldo}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">R$</InputAdornment>
