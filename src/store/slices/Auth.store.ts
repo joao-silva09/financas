@@ -54,7 +54,7 @@ export function Login(body: UsuarioLoginDto): AppThunk | any {
       dispatch(
         displayMessage({
           message: `Seja bem vindo!`,
-          severity: "error",
+          severity: "success",
         })
       );
       return result.data;
@@ -75,11 +75,10 @@ export function Register(body: UsuarioRegisterDto): AppThunk | any {
       const result = await api.post("Auth/register", body);
       console.log(result.data);
       // localStorage.setItem("accessToken", result.data.data);
-      return result.data;
       dispatch(
         displayMessage({
           message: `Usuário cadastrado! Seja bem vindo!`,
-          severity: "error",
+          severity: "success",
         })
       );
       return result.data;
