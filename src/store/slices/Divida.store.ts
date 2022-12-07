@@ -228,7 +228,6 @@ export function PutDivida(body: UpdateDividaDto): AppThunk | any {
 
 export function DeleteDivida(id: number): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
-
     try {
       const result = await api.delete(`/api/Divida/${id}`);
       dispatch(GetDividasAtivas());
