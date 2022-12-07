@@ -47,7 +47,7 @@ export default function CardConta(data: GetContaDto) {
   const handleOpenDialogExcluirConta = () =>
     setIsOpenDialogExcluirConta(!isOpenDialogExcluirConta);
   const excluirConta = () => {
-    dispatch(DeleteConta(data.id!));
+    dispatch(DeleteConta(data.id!, data.titulo));
     handleOpenDialogExcluirConta();
     handleClose();
   };
