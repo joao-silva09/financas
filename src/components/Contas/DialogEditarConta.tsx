@@ -58,6 +58,7 @@ export default function DialogEditarConta({
         dto.id = data.id;
         dispatch(PutConta(dto));
         resetForm();
+        closeMenu();
         onClose();
       } catch (error: any) {
         console.log(error);
