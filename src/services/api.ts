@@ -1105,26 +1105,28 @@ export class Client {
 
   /**
    * Pagar uma dívida.
+   * @param body (optional)
    * @return Success
    */
-  dividaPOST2(
+  pagar(
     dividaId: number,
-    contaId: number,
+    body: PagarDividaDto | undefined,
     cancelToken?: CancelToken | undefined
   ): Promise<GetDividaDtoListServiceResponse> {
-    let url_ = this.baseUrl + "/api/Divida/{dividaId}/{contaId}";
+    let url_ = this.baseUrl + "/Pagar/{dividaId}";
     if (dividaId === undefined || dividaId === null)
       throw new Error("The parameter 'dividaId' must be defined.");
     url_ = url_.replace("{dividaId}", encodeURIComponent("" + dividaId));
-    if (contaId === undefined || contaId === null)
-      throw new Error("The parameter 'contaId' must be defined.");
-    url_ = url_.replace("{contaId}", encodeURIComponent("" + contaId));
     url_ = url_.replace(/[?&]$/, "");
 
+    const content_ = JSON.stringify(body);
+
     let options_: AxiosRequestConfig = {
+      data: content_,
       method: "POST",
       url: url_,
       headers: {
+        "Content-Type": "application/json",
         Accept: "text/plain",
       },
       cancelToken,
@@ -1140,11 +1142,11 @@ export class Client {
         }
       })
       .then((_response: AxiosResponse) => {
-        return this.processDividaPOST2(_response);
+        return this.processPagar(_response);
       });
   }
 
-  protected processDividaPOST2(
+  protected processPagar(
     response: AxiosResponse
   ): Promise<GetDividaDtoListServiceResponse> {
     const status = response.status;
@@ -1871,6 +1873,87 @@ export class Client {
   }
 
   protected processGet(
+    response: AxiosResponse
+  ): Promise<GetOperacaoDtoListServiceResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && typeof response.headers === "object") {
+      for (let k in response.headers) {
+        if (response.headers.hasOwnProperty(k)) {
+          _headers[k] = response.headers[k];
+        }
+      }
+    }
+    if (status === 200) {
+      const _responseText = response.data;
+      let result200: any = null;
+      let resultData200 = _responseText;
+      result200 = GetOperacaoDtoListServiceResponse.fromJS(resultData200);
+      return Promise.resolve<GetOperacaoDtoListServiceResponse>(result200);
+    } else if (status === 401) {
+      const _responseText = response.data;
+      return throwException("Unauthorized", status, _responseText, _headers);
+    } else if (status === 403) {
+      const _responseText = response.data;
+      return throwException("Forbidden", status, _responseText, _headers);
+    } else if (status !== 200 && status !== 204) {
+      const _responseText = response.data;
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        _responseText,
+        _headers
+      );
+    }
+    return Promise.resolve<GetOperacaoDtoListServiceResponse>(null as any);
+  }
+
+  /**
+   * Buscar todas as operações de um determinado mês e tipo.
+   * @return Success
+   */
+  get2(
+    month: number,
+    year: number,
+    type: TipoOperacao,
+    cancelToken?: CancelToken | undefined
+  ): Promise<GetOperacaoDtoListServiceResponse> {
+    let url_ = this.baseUrl + "/api/Operacao/Get/{month}/{year}/{type}";
+    if (month === undefined || month === null)
+      throw new Error("The parameter 'month' must be defined.");
+    url_ = url_.replace("{month}", encodeURIComponent("" + month));
+    if (year === undefined || year === null)
+      throw new Error("The parameter 'year' must be defined.");
+    url_ = url_.replace("{year}", encodeURIComponent("" + year));
+    if (type === undefined || type === null)
+      throw new Error("The parameter 'type' must be defined.");
+    url_ = url_.replace("{type}", encodeURIComponent("" + type));
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: AxiosRequestConfig = {
+      method: "GET",
+      url: url_,
+      headers: {
+        Accept: "text/plain",
+      },
+      cancelToken,
+    };
+
+    return this.instance
+      .request(options_)
+      .catch((_error: any) => {
+        if (isAxiosError(_error) && _error.response) {
+          return _error.response;
+        } else {
+          throw _error;
+        }
+      })
+      .then((_response: AxiosResponse) => {
+        return this.processGet2(_response);
+      });
+  }
+
+  protected processGet2(
     response: AxiosResponse
   ): Promise<GetOperacaoDtoListServiceResponse> {
     const status = response.status;
@@ -3360,6 +3443,50 @@ export interface IInt32ServiceResponse {
   data?: number;
   success?: boolean;
   message?: string | undefined;
+}
+
+export class PagarDividaDto implements IPagarDividaDto {
+  contaId?: number | undefined;
+  dataPagamento?: Date | undefined;
+
+  constructor(data?: IPagarDividaDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
+    }
+  }
+
+  init(_data?: any) {
+    if (_data) {
+      this.contaId = _data["contaId"];
+      this.dataPagamento = _data["dataPagamento"]
+        ? new Date(_data["dataPagamento"].toString())
+        : <any>undefined;
+    }
+  }
+
+  static fromJS(data: any): PagarDividaDto {
+    data = typeof data === "object" ? data : {};
+    let result = new PagarDividaDto();
+    result.init(data);
+    return result;
+  }
+
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["contaId"] = this.contaId;
+    data["dataPagamento"] = this.dataPagamento
+      ? this.dataPagamento.toISOString()
+      : <any>undefined;
+    return data;
+  }
+}
+
+export interface IPagarDividaDto {
+  contaId?: number | undefined;
+  dataPagamento?: Date | undefined;
 }
 
 export enum SituacaoDivida {

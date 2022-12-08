@@ -4,6 +4,7 @@ import {
   AddDividaDto,
   GetDividaDtoListServiceResponse,
   GetDividaDtoServiceResponse,
+  PagarDividaDto,
   UpdateDividaDto,
 } from "../../services/api";
 import { api } from "../../services/ApiManager";
@@ -180,10 +181,10 @@ export function PostDivida(body: AddDividaDto): AppThunk | any {
   };
 }
 
-export function PagarDivida(id: number, contaId: number): AppThunk | any {
+export function PagarDivida(id: number, body: PagarDividaDto): AppThunk | any {
   return async function (dispatch: AppDispatch | any) {
     try {
-      const result = await api.post(`/api/Divida/${id}/${contaId}`);
+      const result = await api.post(`/Pagar/${id}`, body);
       dispatch(GetDividasAtivas());
       console.log(result);
       dispatch(
@@ -195,7 +196,7 @@ export function PagarDivida(id: number, contaId: number): AppThunk | any {
     } catch (error) {
       dispatch(
         displayMessage({
-          message: `Erro ao registrar o pagamento da dívida!`,
+          message: `Erro ao registrar o pagamento da dívida! ${error}`,
           severity: "error",
         })
       );

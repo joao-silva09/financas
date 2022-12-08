@@ -18,6 +18,10 @@ import { PagarDivida } from "../../store/slices/Divida.store";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { RootState } from "../../store";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import locale from "date-fns/locale/pt-BR";
+import { PagarDividaDto } from "../../services/api";
 
 type DialogPagarDividaProps = {
   open: boolean;
@@ -38,14 +42,19 @@ export default function DialogPagarDivida({
 
   const formSchema = Yup.object().shape({
     conta: Yup.string().required("Este campo é obrigatório!"),
+    dataPagamento: Yup.date()
+      .nullable()
+      .required("Este campo é obrigatório!")
+      .typeError("Data inválida")
+      .transform((curr, orig) => (orig === "" ? null : curr)),
   });
 
   const formik = useFormik({
-    initialValues: { contaId: 0 },
+    initialValues: {} as PagarDividaDto,
     validationSchema: formSchema,
     onSubmit: (values, { resetForm, setSubmitting }) => {
       try {
-        dispatch(PagarDivida(idDivida, values.contaId));
+        dispatch(PagarDivida(idDivida, values));
         onClose();
         resetForm();
       } catch (error: any) {
@@ -65,6 +74,11 @@ export default function DialogPagarDivida({
     isValid,
     dirty,
   } = formik;
+
+  const onChangeDate = (field, value) => {
+    setFieldValue(field, value);
+    console.log(values);
+  };
 
   return (
     <Dialog sx={{ mb: 8 }} open={open} onClose={onClose} fullWidth>
@@ -88,7 +102,7 @@ export default function DialogPagarDivida({
       </DialogContent>
       <DialogContent>
         <Grid container justifyContent="center">
-          <Grid item xs={11}>
+          <Grid item xs={6}>
             <Autocomplete
               fullWidth
               isOptionEqualToValue={(option, value) => value === option}
@@ -111,6 +125,31 @@ export default function DialogPagarDivida({
               )}
             />
           </Grid>
+          <Grid item xs={6}>
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={locale}
+            >
+              <DatePicker
+                value={
+                  values.dataPagamento == undefined
+                    ? null
+                    : values.dataPagamento
+                }
+                label="Data Pagamento"
+                inputFormat="dd/MM/yyyy"
+                onChange={(value) => onChangeDate("dataPagamento", value)}
+                renderInput={(props) => (
+                  <TextField
+                    {...props}
+                    fullWidth
+                    error={Boolean(errors.dataPagamento)}
+                    helperText={errors.dataPagamento}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+          </Grid>
         </Grid>
       </DialogContent>
       <DialogActions sx={{ p: 2 }}>
@@ -127,7 +166,7 @@ export default function DialogPagarDivida({
             endIcon={<Paid />}
             variant="contained"
             onClick={() => {
-              dispatch(PagarDivida(idDivida, values.contaId));
+              dispatch(PagarDivida(idDivida, values));
               onClose();
             }}
             color="primary"
