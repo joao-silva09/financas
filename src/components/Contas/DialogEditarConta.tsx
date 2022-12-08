@@ -113,9 +113,7 @@ export default function DialogEditarConta({
                 <Autocomplete
                   fullWidth
                   value={bancosOptions.find((f) => f.label === values.banco)}
-                  isOptionEqualToValue={(option, value) =>
-                    value.label === option.label
-                  }
+                  isOptionEqualToValue={(option, value) => value === option}
                   options={bancosOptions}
                   autoHighlight
                   disableListWrap
