@@ -86,6 +86,16 @@ export default function Pagas() {
       },
     },
     {
+      field: "dataPagamento",
+      headerName: "Data Pagamento",
+      minWidth: 130,
+      renderCell: (params) => {
+        return params.row.dataPagamento === "0001-01-01T00:00:00"
+          ? ""
+          : new Date(params.row.dataPagamento).toLocaleDateString() ?? "";
+      },
+    },
+    {
       field: "conta.titulo",
       headerName: "Conta",
       minWidth: 170,
