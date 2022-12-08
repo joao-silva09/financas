@@ -18,6 +18,8 @@ import {
   Select,
   MenuItem,
   InputAdornment,
+  FormHelperText,
+  useTheme,
 } from "@mui/material";
 import { Form, FormikProvider, useFormik } from "formik";
 import React, { Fragment, useState } from "react";
@@ -54,6 +56,7 @@ export default function DialogNovaOperacao({
 }: DialogNovaOperacaoProps) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const contas = useSelector((root: RootState) => root.contaStore);
 
@@ -93,6 +96,7 @@ export default function DialogNovaOperacao({
     values,
     errors,
     setFieldValue,
+    handleBlur,
     resetForm,
     touched,
     isValid,
@@ -126,33 +130,51 @@ export default function DialogNovaOperacao({
               <Grid item xs={10}>
                 <TextField
                   type="text"
+                  name="titulo"
                   variant="outlined"
                   autoFocus
                   fullWidth
                   label="Título"
                   onChange={(e) => setFieldValue("titulo", e.target.value)}
+                  onBlur={handleBlur}
                   value={values.titulo}
-                  error={Boolean(errors.titulo)}
-                  helperText={errors.titulo}
+                  error={touched.titulo && Boolean(errors.titulo)}
+                  helperText={touched.titulo && errors.titulo}
                 />
               </Grid>
               <Grid item xs={5}>
                 <FormControl fullWidth>
-                  <InputLabel>Tipo Operação</InputLabel>
+                  <InputLabel
+                    sx={{
+                      color:
+                        touched.tipoOperacao && errors.tipoOperacao
+                          ? theme.palette.error.main
+                          : "",
+                    }}
+                  >
+                    Tipo Operação
+                  </InputLabel>
                   <Select
                     fullWidth
                     label="Tipo Operação"
+                    name="tipoOperacao"
                     value={values.tipoOperacao}
                     onChange={(e) =>
                       setFieldValue("tipoOperacao", e.target.value)
                     }
-                    error={Boolean(errors.tipoOperacao)}
+                    error={touched.tipoOperacao && Boolean(errors.tipoOperacao)}
+                    onBlur={handleBlur}
                   >
                     <MenuItem value={TipoOperacao.Gasto}>A Pagar</MenuItem>
                     <MenuItem value={TipoOperacao.Recebimento}>
                       A Receber
                     </MenuItem>
                   </Select>
+                  {touched.tipoOperacao && errors.tipoOperacao ? (
+                    <FormHelperText sx={{ color: theme.palette.error.main }}>
+                      {errors.tipoOperacao}
+                    </FormHelperText>
+                  ) : null}
                 </FormControl>
               </Grid>
               <Grid item xs={5}>
@@ -161,9 +183,11 @@ export default function DialogNovaOperacao({
                   type="number"
                   label="Valor"
                   onChange={(e) => setFieldValue("valor", e.target.value)}
+                  name="valor"
+                  onBlur={handleBlur}
                   value={values.valor}
-                  error={Boolean(errors.valor)}
-                  helperText={errors.valor}
+                  error={touched.valor && Boolean(errors.valor)}
+                  helperText={touched.valor && errors.valor}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">R$</InputAdornment>
@@ -207,8 +231,13 @@ export default function DialogNovaOperacao({
                       <TextField
                         {...props}
                         fullWidth
-                        error={Boolean(errors.dataOperacao)}
-                        helperText={errors.dataOperacao}
+                        name="dataOperacao"
+                        onBlur={handleBlur}
+                        value={values.dataOperacao}
+                        error={
+                          touched.dataOperacao && Boolean(errors.dataOperacao)
+                        }
+                        helperText={touched.dataOperacao && errors.dataOperacao}
                       />
                     )}
                   />
@@ -219,9 +248,11 @@ export default function DialogNovaOperacao({
                   fullWidth
                   label="Descrição"
                   onChange={(e) => setFieldValue("descricao", e.target.value)}
+                  name="descricao"
+                  onBlur={handleBlur}
                   value={values.descricao}
-                  error={Boolean(errors.descricao)}
-                  helperText={errors.descricao}
+                  error={touched.descricao && Boolean(errors.descricao)}
+                  helperText={touched.descricao && errors.descricao}
                 />
               </Grid>
             </Grid>
