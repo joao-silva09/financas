@@ -31,17 +31,6 @@ export default function Contas() {
   const handleOpenDialogCriarConta = () =>
     setIsOpenDialogCriarConta(!isOpenDialogCriarConta);
 
-  // var total = contas.data!.reduce(getTotal, 0);
-  // function getTotal(total, item) {
-  //   return total + item.saldo;
-  // }
-
-  // var total = contas.data!.map((conta, i) => {
-  //   let soma;
-  //   soma += conta.saldo;
-  //   return soma;
-  // });
-
   return (
     <>
       <Button
@@ -53,13 +42,15 @@ export default function Contas() {
       >
         Criar Conta
       </Button>
-      <Typography variant="h6" color="-moz-initial">
-        Saldo Total:{" "}
-        {saldoTotal!.toLocaleString("pt-br", {
-          style: "currency",
-          currency: "BRL",
-        })}
-      </Typography>
+      {contas.data && saldoTotal !== 0 && saldoTotal !== undefined && (
+        <Typography variant="h6" color="-moz-initial">
+          Saldo Total:{" "}
+          {saldoTotal.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL",
+          })}
+        </Typography>
+      )}
       <Grid container spacing={3}>
         {contas.data &&
           contas.data.map((data, key) => (
