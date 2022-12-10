@@ -1,9 +1,8 @@
-import { Check, Close, Logout } from "@mui/icons-material";
+import { Check, Close } from "@mui/icons-material";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
   Button,
   ButtonGroup,
@@ -20,18 +19,9 @@ import { Form, FormikProvider, useFormik } from "formik";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  AddContaDto,
-  AddDividaDto,
-  AddObjetivoDto,
-  SituacaoDivida,
-  TipoDivida,
-  UpdateDividaDto,
-} from "../../services/api";
-import { PostConta } from "../../store/slices/Conta.store";
+import { TipoDivida, UpdateDividaDto } from "../../services/api";
 import * as Yup from "yup";
-import { PostObjetivo } from "../../store/slices/Objetivo.store";
-import { PostDivida, PutDivida } from "../../store/slices/Divida.store";
+import { PutDivida } from "../../store/slices/Divida.store";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import locale from "date-fns/locale/pt-BR";
