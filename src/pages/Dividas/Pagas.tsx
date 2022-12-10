@@ -1,18 +1,8 @@
 import { Delete } from "@mui/icons-material";
-import {
-  Box,
-  Card,
-  CardHeader,
-  Divider,
-  ButtonGroup,
-  Button,
-  Grid,
-  Tooltip,
-} from "@mui/material";
+import { Box, Card, CardHeader, Divider, Tooltip } from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
-  GridColDef,
   GridColumns,
   GridRenderCellParams,
 } from "@mui/x-data-grid";
@@ -20,13 +10,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomNoRowsOverlay from "../../components/CustomNoRowsOverlay";
 import DialogExcluirDivida from "../../components/Dividas/DialogExcluirDivida";
-import DividasAPagar from "../../components/Dividas/DividasAPagar";
-import DividasAReceber from "../../components/Dividas/DividasAReceber";
-import DialogCriarObjetivo from "../../components/Objetivos/DialogCriarObjetivo";
-import { GetContaDto, GetDividaDto } from "../../services/api";
+import { GetDividaDto } from "../../services/api";
 import { RootState } from "../../store";
 import { DeleteDivida, GetDividasPagas } from "../../store/slices/Divida.store";
-import { GetObjetivos } from "../../store/slices/Objetivo.store";
 
 export default function Pagas() {
   const columnsDividas: GridColumns = [
