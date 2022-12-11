@@ -14,8 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import store, { RootState } from "../../store";
 import {
   clearDashboard,
-  GetGastos,
-  GetRecebimentos,
+  GetGastosByMonth,
+  GetRecebimentosByMonth,
   setStateDashboardDateFilter,
 } from "../../store/slices/Dashboard.store";
 import {
@@ -29,14 +29,39 @@ import { SearchOutlined } from "@mui/icons-material";
 export default function Dashboard() {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(GetRecebimentos());
-    dispatch(GetGastos());
+    dispatch(
+      GetRecebimentosByMonth(
+        store.getState().dashboardStore.filters.dateFilter.getMonth() + 1,
+        store.getState().dashboardStore.filters.dateFilter.getFullYear()
+      )
+    );
+    dispatch(
+      GetGastosByMonth(
+        store.getState().dashboardStore.filters.dateFilter.getMonth() + 1,
+        store.getState().dashboardStore.filters.dateFilter.getFullYear()
+      )
+    );
   }, [dispatch]);
 
   const dashboard = useSelector((root: RootState) => root.dashboardStore);
 
   const onChangeDate = (value: Date) =>
     dispatch(setStateDashboardDateFilter(value));
+
+  const onFilter = () => {
+    dispatch(
+      GetRecebimentosByMonth(
+        store.getState().dashboardStore.filters.dateFilter.getMonth() + 1,
+        store.getState().dashboardStore.filters.dateFilter.getFullYear()
+      )
+    );
+    dispatch(
+      GetGastosByMonth(
+        store.getState().dashboardStore.filters.dateFilter.getMonth() + 1,
+        store.getState().dashboardStore.filters.dateFilter.getFullYear()
+      )
+    );
+  };
 
   return (
     <Grid container spacing={3}>
@@ -74,56 +99,53 @@ export default function Dashboard() {
               variant="outlined"
               fullWidth
               endIcon={<SearchOutlined />}
-              onClick={() => {
-                dispatch(
-                  GetOperacoesByMonth(
-                    dashboard.filters.dateFilter?.getMonth()! + 1,
-                    dashboard.filters.dateFilter?.getFullYear()
-                  )
-                );
-              }}
+              onClick={onFilter}
             >
               Buscar
             </Button>
           </CardContent>
-          <CardContent>
-            <TextField
-              fullWidth
-              size="small"
-              label="Entradas"
-              disabled
-              value={dashboard.recebimentos!.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })}
-            />
-          </CardContent>
-          <CardContent>
-            <TextField
-              fullWidth
-              size="small"
-              label="Saídas"
-              disabled
-              value={dashboard.gastos!.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })}
-            />
-          </CardContent>
-          <CardContent>
-            <TextField
-              fullWidth
-              size="small"
-              label="Balanço"
-              disabled
-              value={(
-                dashboard.recebimentos! - dashboard.gastos!
-              ).toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })}
-            />
-          </CardContent>
+          {dashboard && (
+            <>
+              <CardContent>
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Entradas"
+                  disabled
+                  value={dashboard.recebimentos!.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                />
+              </CardContent>
+              <CardContent>
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Saídas"
+                  disabled
+                  value={dashboard.gastos!.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                />
+              </CardContent>
+              <CardContent>
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Balanço"
+                  disabled
+                  value={(
+                    dashboard.recebimentos! - dashboard.gastos!
+                  ).toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                />
+              </CardContent>
+            </>
+          )}
         </Card>
       </Grid>
     </Grid>
