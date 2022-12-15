@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
   Button,
   ButtonGroup,
@@ -12,14 +11,11 @@ import {
   TextField,
   Autocomplete,
   Box,
-  Typography,
   InputAdornment,
 } from "@mui/material";
 import { Form, FormikProvider, useFormik } from "formik";
-import React, { Fragment } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { AddContaDto, Banco } from "../../services/api";
+import { AddContaDto } from "../../services/api";
 import { PostConta } from "../../store/slices/Conta.store";
 import * as Yup from "yup";
 import { bancosOptions } from "../../utils/bancosOptions";
@@ -34,7 +30,6 @@ export default function DialogCriarConta({
   onClose,
 }: DialogCriarContaProps) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const formSchema = Yup.object().shape({
     titulo: Yup.string().required("Este campo é obrigatório!"),
@@ -45,7 +40,7 @@ export default function DialogCriarConta({
   const formik = useFormik({
     initialValues: {} as AddContaDto,
     validationSchema: formSchema,
-    onSubmit: (values, { resetForm, setSubmitting }) => {
+    onSubmit: (values, { resetForm }) => {
       try {
         dispatch(PostConta(values));
         onClose();
@@ -57,12 +52,10 @@ export default function DialogCriarConta({
   });
 
   const {
-    handleChange,
     handleSubmit,
     values,
     errors,
     setFieldValue,
-    resetForm,
     handleBlur,
     touched,
     isValid,
