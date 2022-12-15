@@ -1,13 +1,10 @@
-import { More, MoreVert, Visibility, VisibilityOff } from "@mui/icons-material";
+import { MoreVert, Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Card,
   CardHeader,
-  Avatar,
   IconButton,
   CardContent,
   Typography,
-  CardActions,
-  Button,
   Box,
   Menu,
   MenuItem,
@@ -15,13 +12,11 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { GetContaDto, Banco } from "../../services/api";
-import { RootState } from "../../store";
-import { DeleteConta, GetContaById } from "../../store/slices/Conta.store";
+import { DeleteConta } from "../../store/slices/Conta.store";
 import { verificarBanco } from "../../utils/verificarBanco";
 import { verificarCorBanco } from "../../utils/verificarCorBanco";
-import DialogCriarConta from "./DialogCriarConta";
 import DialogEditarConta from "./DialogEditarConta";
 import DialogExcluirConta from "./DialogExcluirConta";
 
@@ -30,8 +25,6 @@ export default function CardConta(data: GetContaDto) {
   const dispatch = useDispatch();
 
   const [isSaldoVisible, setIsSaldoVisible] = useState(false);
-
-  const conta = useSelector((root: RootState) => root.contaStore.conta);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
