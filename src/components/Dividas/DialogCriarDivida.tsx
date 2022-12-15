@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
   Button,
   ButtonGroup,
@@ -20,16 +19,8 @@ import { Form, FormikProvider, useFormik } from "formik";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  AddContaDto,
-  AddDividaDto,
-  AddObjetivoDto,
-  SituacaoDivida,
-  TipoDivida,
-} from "../../services/api";
-import { PostConta } from "../../store/slices/Conta.store";
+import { AddDividaDto, TipoDivida } from "../../services/api";
 import * as Yup from "yup";
-import { PostObjetivo } from "../../store/slices/Objetivo.store";
 import { PostDivida } from "../../store/slices/Divida.store";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
