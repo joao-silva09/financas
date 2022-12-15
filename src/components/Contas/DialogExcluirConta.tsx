@@ -1,4 +1,4 @@
-import { Close, Delete, Logout } from "@mui/icons-material";
+import { Close, Delete } from "@mui/icons-material";
 import {
   Dialog,
   DialogTitle,
@@ -9,8 +9,6 @@ import {
   ButtonGroup,
   IconButton,
 } from "@mui/material";
-import React from "react";
-import { useDispatch } from "react-redux";
 
 type DialogExcluirContaProps = {
   open: boolean;
