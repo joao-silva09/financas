@@ -2,14 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import store, { AppDispatch, AppThunk } from "..";
 import {
-  AddOperacaoDto,
   GetOperacaoDtoListServiceResponse,
-  GetOperacaoDtoServiceResponse,
   TipoOperacao,
-  UpdateOperacaoDto,
 } from "../../services/api";
 import { api } from "../../services/ApiManager";
-import { GetOperacoesByMonth } from "./Operacao.store";
 
 const dashboardStore = createSlice({
   name: "dashboardStore",
