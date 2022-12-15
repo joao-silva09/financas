@@ -1,40 +1,28 @@
-import { Add, SearchOffOutlined, SearchOutlined } from "@mui/icons-material";
+import { Add, SearchOutlined } from "@mui/icons-material";
 import {
   Box,
   Button,
-  Card,
   Grid,
-  Menu,
-  MenuItem,
   TextField,
-  Typography,
-  FormControl,
-  FormLabel,
-  FormHelperText,
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CardConta from "../../components/Contas/CardConta";
-import DialogCriarConta from "../../components/Contas/DialogCriarConta";
 import CardOperacao from "../../components/Operacoes/CardOperacao";
 import DialogNovaOperacao from "../../components/Operacoes/DialogNovaOperacao";
 import { RootState } from "../../store";
 import { GetContas } from "../../store/slices/Conta.store";
 import {
-  GetOperacoes,
-  GetOperacoesByMonth,
   GetOperacoesByMonthAndType,
-  setDateFilter,
   setStateDateFilter,
   setStateTypeFilterGastos,
   setStateTypeFilterRecebimentos,
 } from "../../store/slices/Operacao.store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import locale from "date-fns/locale/pt-BR";
-import { TipoOperacao } from "../../services/api";
+import { displayMessage } from "../../store/Application.store";
 
 export default function Contas() {
   const dispatch = useDispatch();
@@ -126,12 +114,19 @@ export default function Contas() {
             fullWidth
             endIcon={<SearchOutlined />}
             onClick={() =>
-              dispatch(
-                GetOperacoesByMonthAndType(
-                  filters.dateFilter?.getMonth()! + 1,
-                  filters.dateFilter?.getFullYear()
-                )
-              )
+              !filters.typeFilter.gastos && !filters.typeFilter.recebimentos
+                ? dispatch(
+                    displayMessage({
+                      message: "Selecione um filtro",
+                      severity: "warning",
+                    })
+                  )
+                : dispatch(
+                    GetOperacoesByMonthAndType(
+                      filters.dateFilter?.getMonth()! + 1,
+                      filters.dateFilter?.getFullYear()
+                    )
+                  )
             }
           >
             Buscar
