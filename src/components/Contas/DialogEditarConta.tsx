@@ -1,9 +1,8 @@
-import { Check, Close, Logout } from "@mui/icons-material";
+import { Check, Close } from "@mui/icons-material";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
   Button,
   ButtonGroup,
@@ -15,11 +14,9 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Form, FormikProvider, useFormik } from "formik";
-import React from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { AddContaDto, UpdateContaDto } from "../../services/api";
-import { PostConta, PutConta } from "../../store/slices/Conta.store";
+import { UpdateContaDto } from "../../services/api";
+import { PutConta } from "../../store/slices/Conta.store";
 import * as Yup from "yup";
 import { bancosOptions } from "../../utils/bancosOptions";
 
@@ -37,7 +34,6 @@ export default function DialogEditarConta({
   data,
 }: DialogEditarContaProps) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const formSchema = Yup.object().shape({
     titulo: Yup.string().required("Este campo é obrigatório!"),
@@ -52,7 +48,7 @@ export default function DialogEditarConta({
       saldo: data.saldo,
     } as UpdateContaDto,
     validationSchema: formSchema,
-    onSubmit: (values, { resetForm, setSubmitting }) => {
+    onSubmit: (values, { resetForm }) => {
       try {
         let dto = values as UpdateContaDto;
         dto.id = data.id;
@@ -67,13 +63,11 @@ export default function DialogEditarConta({
   });
 
   const {
-    handleChange,
     handleSubmit,
     values,
     errors,
     setFieldValue,
     resetForm,
-    touched,
     isValid,
     dirty,
   } = formik;
