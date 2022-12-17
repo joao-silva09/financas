@@ -1113,7 +1113,7 @@ export class Client {
     body: PagarDividaDto | undefined,
     cancelToken?: CancelToken | undefined
   ): Promise<GetDividaDtoListServiceResponse> {
-    let url_ = this.baseUrl + "/Pagar/{dividaId}";
+    let url_ = this.baseUrl + "/api/Divida/Pagar/{dividaId}";
     if (dividaId === undefined || dividaId === null)
       throw new Error("The parameter 'dividaId' must be defined.");
     url_ = url_.replace("{dividaId}", encodeURIComponent("" + dividaId));
@@ -1832,6 +1832,298 @@ export class Client {
   }
 
   /**
+   * Buscar todos os gastos.
+   * @return Success
+   */
+  gastos(
+    cancelToken?: CancelToken | undefined
+  ): Promise<GetOperacaoDtoListServiceResponse> {
+    let url_ = this.baseUrl + "/api/Operacao/Get/gastos";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: AxiosRequestConfig = {
+      method: "GET",
+      url: url_,
+      headers: {
+        Accept: "text/plain",
+      },
+      cancelToken,
+    };
+
+    return this.instance
+      .request(options_)
+      .catch((_error: any) => {
+        if (isAxiosError(_error) && _error.response) {
+          return _error.response;
+        } else {
+          throw _error;
+        }
+      })
+      .then((_response: AxiosResponse) => {
+        return this.processGastos(_response);
+      });
+  }
+
+  protected processGastos(
+    response: AxiosResponse
+  ): Promise<GetOperacaoDtoListServiceResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && typeof response.headers === "object") {
+      for (let k in response.headers) {
+        if (response.headers.hasOwnProperty(k)) {
+          _headers[k] = response.headers[k];
+        }
+      }
+    }
+    if (status === 200) {
+      const _responseText = response.data;
+      let result200: any = null;
+      let resultData200 = _responseText;
+      result200 = GetOperacaoDtoListServiceResponse.fromJS(resultData200);
+      return Promise.resolve<GetOperacaoDtoListServiceResponse>(result200);
+    } else if (status === 401) {
+      const _responseText = response.data;
+      return throwException("Unauthorized", status, _responseText, _headers);
+    } else if (status === 403) {
+      const _responseText = response.data;
+      return throwException("Forbidden", status, _responseText, _headers);
+    } else if (status !== 200 && status !== 204) {
+      const _responseText = response.data;
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        _responseText,
+        _headers
+      );
+    }
+    return Promise.resolve<GetOperacaoDtoListServiceResponse>(null as any);
+  }
+
+  /**
+   * Buscar todos os gastos de um determinado mês.
+   * @return Success
+   */
+  gastos2(
+    month: number,
+    year: number,
+    cancelToken?: CancelToken | undefined
+  ): Promise<GetOperacaoDtoListServiceResponse> {
+    let url_ = this.baseUrl + "/api/Operacao/Get/gastos/{month}/{year}";
+    if (month === undefined || month === null)
+      throw new Error("The parameter 'month' must be defined.");
+    url_ = url_.replace("{month}", encodeURIComponent("" + month));
+    if (year === undefined || year === null)
+      throw new Error("The parameter 'year' must be defined.");
+    url_ = url_.replace("{year}", encodeURIComponent("" + year));
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: AxiosRequestConfig = {
+      method: "GET",
+      url: url_,
+      headers: {
+        Accept: "text/plain",
+      },
+      cancelToken,
+    };
+
+    return this.instance
+      .request(options_)
+      .catch((_error: any) => {
+        if (isAxiosError(_error) && _error.response) {
+          return _error.response;
+        } else {
+          throw _error;
+        }
+      })
+      .then((_response: AxiosResponse) => {
+        return this.processGastos2(_response);
+      });
+  }
+
+  protected processGastos2(
+    response: AxiosResponse
+  ): Promise<GetOperacaoDtoListServiceResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && typeof response.headers === "object") {
+      for (let k in response.headers) {
+        if (response.headers.hasOwnProperty(k)) {
+          _headers[k] = response.headers[k];
+        }
+      }
+    }
+    if (status === 200) {
+      const _responseText = response.data;
+      let result200: any = null;
+      let resultData200 = _responseText;
+      result200 = GetOperacaoDtoListServiceResponse.fromJS(resultData200);
+      return Promise.resolve<GetOperacaoDtoListServiceResponse>(result200);
+    } else if (status === 401) {
+      const _responseText = response.data;
+      return throwException("Unauthorized", status, _responseText, _headers);
+    } else if (status === 403) {
+      const _responseText = response.data;
+      return throwException("Forbidden", status, _responseText, _headers);
+    } else if (status !== 200 && status !== 204) {
+      const _responseText = response.data;
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        _responseText,
+        _headers
+      );
+    }
+    return Promise.resolve<GetOperacaoDtoListServiceResponse>(null as any);
+  }
+
+  /**
+   * Buscar todos os recebimentos.
+   * @return Success
+   */
+  recebimentos(
+    cancelToken?: CancelToken | undefined
+  ): Promise<GetOperacaoDtoListServiceResponse> {
+    let url_ = this.baseUrl + "/api/Operacao/Get/recebimentos";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: AxiosRequestConfig = {
+      method: "GET",
+      url: url_,
+      headers: {
+        Accept: "text/plain",
+      },
+      cancelToken,
+    };
+
+    return this.instance
+      .request(options_)
+      .catch((_error: any) => {
+        if (isAxiosError(_error) && _error.response) {
+          return _error.response;
+        } else {
+          throw _error;
+        }
+      })
+      .then((_response: AxiosResponse) => {
+        return this.processRecebimentos(_response);
+      });
+  }
+
+  protected processRecebimentos(
+    response: AxiosResponse
+  ): Promise<GetOperacaoDtoListServiceResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && typeof response.headers === "object") {
+      for (let k in response.headers) {
+        if (response.headers.hasOwnProperty(k)) {
+          _headers[k] = response.headers[k];
+        }
+      }
+    }
+    if (status === 200) {
+      const _responseText = response.data;
+      let result200: any = null;
+      let resultData200 = _responseText;
+      result200 = GetOperacaoDtoListServiceResponse.fromJS(resultData200);
+      return Promise.resolve<GetOperacaoDtoListServiceResponse>(result200);
+    } else if (status === 401) {
+      const _responseText = response.data;
+      return throwException("Unauthorized", status, _responseText, _headers);
+    } else if (status === 403) {
+      const _responseText = response.data;
+      return throwException("Forbidden", status, _responseText, _headers);
+    } else if (status !== 200 && status !== 204) {
+      const _responseText = response.data;
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        _responseText,
+        _headers
+      );
+    }
+    return Promise.resolve<GetOperacaoDtoListServiceResponse>(null as any);
+  }
+
+  /**
+   * Buscar todos os recebimentos de um determinado mês.
+   * @return Success
+   */
+  recebimentos2(
+    month: number,
+    year: number,
+    cancelToken?: CancelToken | undefined
+  ): Promise<GetOperacaoDtoListServiceResponse> {
+    let url_ = this.baseUrl + "/api/Operacao/Get/recebimentos/{month}/{year}";
+    if (month === undefined || month === null)
+      throw new Error("The parameter 'month' must be defined.");
+    url_ = url_.replace("{month}", encodeURIComponent("" + month));
+    if (year === undefined || year === null)
+      throw new Error("The parameter 'year' must be defined.");
+    url_ = url_.replace("{year}", encodeURIComponent("" + year));
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: AxiosRequestConfig = {
+      method: "GET",
+      url: url_,
+      headers: {
+        Accept: "text/plain",
+      },
+      cancelToken,
+    };
+
+    return this.instance
+      .request(options_)
+      .catch((_error: any) => {
+        if (isAxiosError(_error) && _error.response) {
+          return _error.response;
+        } else {
+          throw _error;
+        }
+      })
+      .then((_response: AxiosResponse) => {
+        return this.processRecebimentos2(_response);
+      });
+  }
+
+  protected processRecebimentos2(
+    response: AxiosResponse
+  ): Promise<GetOperacaoDtoListServiceResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && typeof response.headers === "object") {
+      for (let k in response.headers) {
+        if (response.headers.hasOwnProperty(k)) {
+          _headers[k] = response.headers[k];
+        }
+      }
+    }
+    if (status === 200) {
+      const _responseText = response.data;
+      let result200: any = null;
+      let resultData200 = _responseText;
+      result200 = GetOperacaoDtoListServiceResponse.fromJS(resultData200);
+      return Promise.resolve<GetOperacaoDtoListServiceResponse>(result200);
+    } else if (status === 401) {
+      const _responseText = response.data;
+      return throwException("Unauthorized", status, _responseText, _headers);
+    } else if (status === 403) {
+      const _responseText = response.data;
+      return throwException("Forbidden", status, _responseText, _headers);
+    } else if (status !== 200 && status !== 204) {
+      const _responseText = response.data;
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        _responseText,
+        _headers
+      );
+    }
+    return Promise.resolve<GetOperacaoDtoListServiceResponse>(null as any);
+  }
+
+  /**
    * Buscar todas as operações de um determinado mês.
    * @return Success
    */
@@ -1987,6 +2279,83 @@ export class Client {
       );
     }
     return Promise.resolve<GetOperacaoDtoListServiceResponse>(null as any);
+  }
+
+  /**
+   * Buscar contagem de operações.
+   * @return Success
+   */
+  dados(
+    month: number,
+    year: number,
+    cancelToken?: CancelToken | undefined
+  ): Promise<GetDadosDtoServiceResponse> {
+    let url_ = this.baseUrl + "/api/Operacao/Get/dados/{month}/{year}";
+    if (month === undefined || month === null)
+      throw new Error("The parameter 'month' must be defined.");
+    url_ = url_.replace("{month}", encodeURIComponent("" + month));
+    if (year === undefined || year === null)
+      throw new Error("The parameter 'year' must be defined.");
+    url_ = url_.replace("{year}", encodeURIComponent("" + year));
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: AxiosRequestConfig = {
+      method: "GET",
+      url: url_,
+      headers: {
+        Accept: "text/plain",
+      },
+      cancelToken,
+    };
+
+    return this.instance
+      .request(options_)
+      .catch((_error: any) => {
+        if (isAxiosError(_error) && _error.response) {
+          return _error.response;
+        } else {
+          throw _error;
+        }
+      })
+      .then((_response: AxiosResponse) => {
+        return this.processDados(_response);
+      });
+  }
+
+  protected processDados(
+    response: AxiosResponse
+  ): Promise<GetDadosDtoServiceResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && typeof response.headers === "object") {
+      for (let k in response.headers) {
+        if (response.headers.hasOwnProperty(k)) {
+          _headers[k] = response.headers[k];
+        }
+      }
+    }
+    if (status === 200) {
+      const _responseText = response.data;
+      let result200: any = null;
+      let resultData200 = _responseText;
+      result200 = GetDadosDtoServiceResponse.fromJS(resultData200);
+      return Promise.resolve<GetDadosDtoServiceResponse>(result200);
+    } else if (status === 401) {
+      const _responseText = response.data;
+      return throwException("Unauthorized", status, _responseText, _headers);
+    } else if (status === 403) {
+      const _responseText = response.data;
+      return throwException("Forbidden", status, _responseText, _headers);
+    } else if (status !== 200 && status !== 204) {
+      const _responseText = response.data;
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        _responseText,
+        _headers
+      );
+    }
+    return Promise.resolve<GetDadosDtoServiceResponse>(null as any);
   }
 
   /**
@@ -2888,6 +3257,92 @@ export class GetContaDtoServiceResponse implements IGetContaDtoServiceResponse {
 
 export interface IGetContaDtoServiceResponse {
   data?: GetContaDto;
+  success?: boolean;
+  message?: string | undefined;
+}
+
+export class GetDadosDto implements IGetDadosDto {
+  entradas?: number;
+  saidas?: number;
+
+  constructor(data?: IGetDadosDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
+    }
+  }
+
+  init(_data?: any) {
+    if (_data) {
+      this.entradas = _data["entradas"];
+      this.saidas = _data["saidas"];
+    }
+  }
+
+  static fromJS(data: any): GetDadosDto {
+    data = typeof data === "object" ? data : {};
+    let result = new GetDadosDto();
+    result.init(data);
+    return result;
+  }
+
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["entradas"] = this.entradas;
+    data["saidas"] = this.saidas;
+    return data;
+  }
+}
+
+export interface IGetDadosDto {
+  entradas?: number;
+  saidas?: number;
+}
+
+export class GetDadosDtoServiceResponse implements IGetDadosDtoServiceResponse {
+  data?: GetDadosDto;
+  success?: boolean;
+  message?: string | undefined;
+
+  constructor(data?: IGetDadosDtoServiceResponse) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
+    }
+  }
+
+  init(_data?: any) {
+    if (_data) {
+      this.data = _data["data"]
+        ? GetDadosDto.fromJS(_data["data"])
+        : <any>undefined;
+      this.success = _data["success"];
+      this.message = _data["message"];
+    }
+  }
+
+  static fromJS(data: any): GetDadosDtoServiceResponse {
+    data = typeof data === "object" ? data : {};
+    let result = new GetDadosDtoServiceResponse();
+    result.init(data);
+    return result;
+  }
+
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+    data["success"] = this.success;
+    data["message"] = this.message;
+    return data;
+  }
+}
+
+export interface IGetDadosDtoServiceResponse {
+  data?: GetDadosDto;
   success?: boolean;
   message?: string | undefined;
 }
