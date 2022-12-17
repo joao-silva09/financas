@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import store, { AppDispatch, AppThunk } from "..";
 import {
+  GetDadosDto,
   GetOperacaoDtoListServiceResponse,
   TipoOperacao,
 } from "../../services/api";
@@ -10,9 +11,11 @@ import { api } from "../../services/ApiManager";
 const dashboardStore = createSlice({
   name: "dashboardStore",
   initialState: {
-    recebimentos: 0 as number | undefined,
+    numeroRecebimentos: 0 as number | undefined,
+    totalRecebimentos: 0 as number | undefined,
     recebimentosList: {} as GetOperacaoDtoListServiceResponse,
-    gastos: 0 as number | undefined,
+    numeroGastos: 0 as number | undefined,
+    totalGastos: 0 as number | undefined,
     gastosList: {} as GetOperacaoDtoListServiceResponse,
     filters: {
       dateFilter: new Date(),
@@ -35,30 +38,39 @@ const dashboardStore = createSlice({
     ) {
       state.gastosList = action.payload;
     },
-    setRecebimentos(state, action: PayloadAction<number>) {
-      state.recebimentos = action.payload;
+    setTotalRecebimentos(state, action: PayloadAction<number>) {
+      state.totalRecebimentos = action.payload;
     },
-    setGastos(state, action: PayloadAction<number>) {
-      state.gastos = action.payload;
+    setTotalGastos(state, action: PayloadAction<number>) {
+      state.totalGastos = action.payload;
+    },
+    setNumeroRecebimentos(state, action: PayloadAction<number>) {
+      state.numeroRecebimentos = action.payload;
+    },
+    setNumeroGastos(state, action: PayloadAction<number>) {
+      state.numeroGastos = action.payload;
     },
     setDashboardDateFilter(state, action: PayloadAction<Date>) {
       state.filters.dateFilter = action.payload;
     },
     clear(state) {
-      state.recebimentos = dashboardStore.getInitialState().recebimentos;
+      state.totalRecebimentos =
+        dashboardStore.getInitialState().totalRecebimentos;
       state.recebimentosList =
         dashboardStore.getInitialState().recebimentosList;
-      state.gastos = dashboardStore.getInitialState().gastos;
+      state.totalGastos = dashboardStore.getInitialState().totalGastos;
       state.gastosList = dashboardStore.getInitialState().gastosList;
     },
   },
 });
 
 export const {
-  setRecebimentos,
+  setTotalGastos,
+  setTotalRecebimentos,
+  setNumeroRecebimentos,
+  setNumeroGastos,
   setRecebimentosList,
   setGastosList,
-  setGastos,
   setDashboardDateFilter,
   clear,
 } = dashboardStore.actions;
@@ -90,7 +102,7 @@ export function GetGastosByMonth(month: number, year: number): AppThunk | any {
           )
           .reduce((total, valor) => total! + valor!);
 
-        dispatch(setGastos(gastosValue!));
+        dispatch(setTotalGastos(gastosValue!));
       });
 
     return result;
@@ -114,7 +126,20 @@ export function GetRecebimentosByMonth(
           )
           .reduce((total, valor) => total! + valor!);
 
-        dispatch(setRecebimentos(recebimentosValue!));
+        dispatch(setTotalRecebimentos(recebimentosValue!));
+      });
+
+    return result;
+  };
+}
+
+export function GetDadosByMonth(month: number, year: number): AppThunk | any {
+  return async function (dispatch: AppDispatch | any) {
+    const result = await api
+      .get(`/api/Operacao/Get/dados/${month}/${year}`)
+      .then((result) => {
+        dispatch(setNumeroRecebimentos(result.data.data.entradas!));
+        dispatch(setNumeroGastos(result.data.data.saidas!));
       });
 
     return result;
