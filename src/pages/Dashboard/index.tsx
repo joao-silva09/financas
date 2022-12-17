@@ -14,17 +14,15 @@ import { useDispatch, useSelector } from "react-redux";
 import store, { RootState } from "../../store";
 import {
   clearDashboard,
+  GetDadosByMonth,
   GetGastosByMonth,
   GetRecebimentosByMonth,
   setStateDashboardDateFilter,
 } from "../../store/slices/Dashboard.store";
-import {
-  GetOperacoesByMonth,
-  setStateDateFilter,
-} from "../../store/slices/Operacao.store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import locale from "date-fns/locale/pt-BR";
 import { SearchOutlined } from "@mui/icons-material";
+import DonutOperacoesMes from "./Charts/DonutOperacoesMes";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -37,6 +35,12 @@ export default function Dashboard() {
     );
     dispatch(
       GetGastosByMonth(
+        store.getState().dashboardStore.filters.dateFilter.getMonth() + 1,
+        store.getState().dashboardStore.filters.dateFilter.getFullYear()
+      )
+    );
+    dispatch(
+      GetDadosByMonth(
         store.getState().dashboardStore.filters.dateFilter.getMonth() + 1,
         store.getState().dashboardStore.filters.dateFilter.getFullYear()
       )
@@ -61,17 +65,26 @@ export default function Dashboard() {
         store.getState().dashboardStore.filters.dateFilter.getFullYear()
       )
     );
+    dispatch(
+      GetDadosByMonth(
+        store.getState().dashboardStore.filters.dateFilter.getMonth() + 1,
+        store.getState().dashboardStore.filters.dateFilter.getFullYear()
+      )
+    );
+    console.log(dashboard);
   };
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={4}>
+        <Card>
+          <DonutOperacoesMes />
+        </Card>
+      </Grid>
+      <Grid item xs={5}>
         <Card>teste</Card>
       </Grid>
-      <Grid item xs={4}>
-        <Card>teste</Card>
-      </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={3}>
         <Card>
           <CardHeader title="Movimentações" subheader="Selecione o mês" />
           <CardContent>
@@ -96,6 +109,7 @@ export default function Dashboard() {
               />
             </LocalizationProvider>
             <Button
+              sx={{ mt: 1 }}
               variant="outlined"
               fullWidth
               endIcon={<SearchOutlined />}
@@ -109,10 +123,11 @@ export default function Dashboard() {
               <CardContent>
                 <TextField
                   fullWidth
+                  variant="standard"
                   size="small"
                   label="Entradas"
                   disabled
-                  value={dashboard.recebimentos!.toLocaleString("pt-br", {
+                  value={dashboard.totalRecebimentos!.toLocaleString("pt-br", {
                     style: "currency",
                     currency: "BRL",
                   })}
@@ -121,10 +136,11 @@ export default function Dashboard() {
               <CardContent>
                 <TextField
                   fullWidth
+                  variant="standard"
                   size="small"
                   label="Saídas"
                   disabled
-                  value={dashboard.gastos!.toLocaleString("pt-br", {
+                  value={dashboard.totalGastos!.toLocaleString("pt-br", {
                     style: "currency",
                     currency: "BRL",
                   })}
@@ -133,11 +149,12 @@ export default function Dashboard() {
               <CardContent>
                 <TextField
                   fullWidth
+                  variant="standard"
                   size="small"
                   label="Balanço"
                   disabled
                   value={(
-                    dashboard.recebimentos! - dashboard.gastos!
+                    dashboard.totalRecebimentos! - dashboard.totalGastos!
                   ).toLocaleString("pt-br", {
                     style: "currency",
                     currency: "BRL",
