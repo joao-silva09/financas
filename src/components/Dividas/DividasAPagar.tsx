@@ -1,8 +1,6 @@
-import { Add, Delete, Edit, MonetizationOn } from "@mui/icons-material";
+import { Delete, MonetizationOn } from "@mui/icons-material";
 import {
   Box,
-  Button,
-  ButtonGroup,
   Card,
   CardHeader,
   Divider,
@@ -16,12 +14,9 @@ import { RootState } from "../../store";
 import {
   DeleteDivida,
   GetDividasAPagar,
-  PagarDivida,
 } from "../../store/slices/Divida.store";
 import { themeTokens } from "../../themes";
 import CustomNoRowsOverlay from "../CustomNoRowsOverlay";
-import DialogCriarDivida from "./DialogCriarDivida";
-import DialogEditarDivida from "./DialogEditarDivida";
 import DialogExcluirDivida from "./DialogExcluirDivida";
 import DialogPagarDivida from "./DialogPagarDivida";
 
