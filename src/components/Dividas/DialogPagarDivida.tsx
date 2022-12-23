@@ -1,4 +1,4 @@
-import { Close, Delete, Logout, Paid } from "@mui/icons-material";
+import { Close, Paid } from "@mui/icons-material";
 import {
   Dialog,
   DialogTitle,
