@@ -101,7 +101,13 @@ export default function DialogPagarDivida({
         </DialogContentText>
       </DialogContent>
       <DialogContent>
-        <Grid container justifyContent="center">
+        <Grid
+          container
+          columnSpacing={3}
+          rowSpacing={4}
+          justifyContent="center"
+          pt={2}
+        >
           <Grid item xs={6}>
             <Autocomplete
               fullWidth
