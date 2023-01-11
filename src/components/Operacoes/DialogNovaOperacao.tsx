@@ -22,7 +22,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Form, FormikProvider, useFormik } from "formik";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -42,6 +42,10 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import locale from "date-fns/locale/pt-BR";
 import { RootState } from "../../store";
+import {
+  SetSaldoDaContaSelecionada,
+  setSaldoDaContaSelecionada,
+} from "../../store/slices/Conta.store";
 
 type DialogNovaOperacaoProps = {
   open: boolean;
@@ -60,10 +64,14 @@ export default function DialogNovaOperacao({
 
   const contas = useSelector((root: RootState) => root.contaStore);
 
+  const [saldoCont, setSaldoCont] = useState<number>();
+
   const formSchema = Yup.object().shape({
     titulo: Yup.string().required("Este campo é obrigatório!"),
     descricao: Yup.string().optional(),
-    valor: Yup.number().required("Este campo é obrigatório!"),
+    valor: Yup.number()
+      .required("Este campo é obrigatório!")
+      .max(saldoCont!, "Saldo insuficiente!"),
     dataOperacao: Yup.date()
       .nullable()
       .required("Este campo é obrigatório!")
@@ -102,6 +110,13 @@ export default function DialogNovaOperacao({
     isValid,
     dirty,
   } = formik;
+
+  useEffect(() => {
+    values.tipoOperacao === TipoOperacao.Gasto
+      ? setSaldoCont(contas.saldoDaContaSelecionada)
+      : setSaldoCont(999999999);
+  }, [values]);
+
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
       <FormikProvider value={formik}>
@@ -159,9 +174,10 @@ export default function DialogNovaOperacao({
                     label="Tipo Operação"
                     name="tipoOperacao"
                     value={values.tipoOperacao}
-                    onChange={(e) =>
-                      setFieldValue("tipoOperacao", e.target.value)
-                    }
+                    onChange={(e) => {
+                      setFieldValue("tipoOperacao", e.target.value);
+                      console.log(contas.saldoDaContaSelecionada);
+                    }}
                     error={touched.tipoOperacao && Boolean(errors.tipoOperacao)}
                     onBlur={handleBlur}
                   >
@@ -176,6 +192,23 @@ export default function DialogNovaOperacao({
                     </FormHelperText>
                   ) : null}
                 </FormControl>
+              </Grid>
+              <Grid item xs={5}>
+                <Autocomplete
+                  fullWidth
+                  isOptionEqualToValue={(option, value) => value === option}
+                  options={contas.contas.data ?? []}
+                  autoHighlight
+                  disableListWrap
+                  getOptionLabel={(option) => option.titulo!}
+                  onChange={(event, value) => {
+                    setContaId(value!.id!);
+                    dispatch(SetSaldoDaContaSelecionada(value!.saldo!));
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Conta" autoComplete="off" />
+                  )}
+                />
               </Grid>
               <Grid item xs={5}>
                 <TextField
@@ -193,22 +226,6 @@ export default function DialogNovaOperacao({
                       <InputAdornment position="start">R$</InputAdornment>
                     ),
                   }}
-                />
-              </Grid>
-              <Grid item xs={5}>
-                <Autocomplete
-                  fullWidth
-                  isOptionEqualToValue={(option, value) => value === option}
-                  options={contas.contas.data ?? []}
-                  autoHighlight
-                  disableListWrap
-                  getOptionLabel={(option) => option.titulo!}
-                  onChange={(event, value) => {
-                    setContaId(value!.id!);
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Conta" autoComplete="off" />
-                  )}
                 />
               </Grid>
               <Grid item xs={5}>
