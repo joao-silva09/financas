@@ -1,4 +1,11 @@
-import { MoreVert, Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Delete,
+  Edit,
+  History,
+  MoreVert,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
 import {
   Card,
   CardHeader,
@@ -10,6 +17,8 @@ import {
   MenuItem,
   Chip,
   useTheme,
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -140,10 +149,22 @@ export default function CardConta(data: GetContaDto) {
         }}
       >
         <MenuItem onClick={handleOpenDialogEditarConta}>
-          Atualizar informações
+          <ListItemIcon>
+            <History fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Histórico</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={handleOpenDialogEditarConta}>
+          <ListItemIcon>
+            <Edit fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Atualizar informações</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleOpenDialogExcluirConta}>
-          Excluir conta
+          <ListItemIcon>
+            <Delete fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Excluir Conta</ListItemText>
         </MenuItem>
       </Menu>
       <DialogExcluirConta
